@@ -2,7 +2,7 @@
   "name": "Mjs",
   "version": "0.1",
   "description": "Mjs (M from Model from MVC) is a lightweight data layer for consuming a REST API",
-  "main": "dist/mjs.min.js",
+  "main": "dist/mjs.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,9 +13,9 @@
   "keywords": [
     "Model",
     "Data",
-    "Layer",
+    "Data Layer",
     "Persistence",
-    "Layer",
+    "Persistence Layer",
     "REST",
     "CRUD"
   ],
