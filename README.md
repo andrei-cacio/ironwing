@@ -24,13 +24,14 @@ book.update();
 ### REST
 For the above example, suppose we have the book and books model and collection. For these we have the following actions with their urls:
 
-Action | Method  | URL | Returns
-------------- | -------------
-new M('book', 1) | GET  | /book/:id | Model
-new M('book') | GET | /book | Collection
-book.update() | PUT | /book/:id | Model
-M.Create() | POST | /book | Model
-book.delete() | DELETE | /book/:id | NULL
+| Action           | Method | URL       | Returns    |
+| ---------------- | -------|-----------|----------- |
+| new M('book', 1) | GET    | /book/:id | Model      |
+| new M('book')    | GET    | /book     | Collection |
+| book.update()    | PUT    | /book/:id | Model      |
+| M.Create()       | POST   | /book     | Model      |
+| book.delete()    | DELETE | /book/:id | NULL       |
+
 
 ### Methods
 Search for the <i>book</i> model with the id <i>1</i>
