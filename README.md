@@ -21,17 +21,46 @@ book.attr.author = 'John Doe';
 // REST API
 book.update();
 ```
+### REST
+For the above example, suppose we have the book and books model and collection. For these we have the following actions with their urls:
+
+Action | Method  | URL | Returns
+------------- | -------------
+new M('book', 1) | GET  | /book/:id | Model
+new M('book') | GET | /book | Collection
+book.update() | PUT | /book/:id | Model
+M.Create() | POST | /book | Model
+book.delete() | DELETE | /book/:id | NULL
+
+### Methods
+Search for the <i>book</i> model with the id <i>1</i>
+
+<i>Note:</i> This method only searches in the cache. If you fetched the book collection then all books are cached so you can access any of them whenever you want in your app.
+```js
+M.find('books', 1);
+```
+Same as <i> find </i> but you search for a collection
+```js
+M.findAll('books');
+```
+
+Creates a new Model with the given attributes
+```js
+M.Create('books', { title: 'Some title', author: 'Some author });
+```
+
 ### Installation
 
-You need Gulp installed globally:
+You need bower installed globally:
 
 ```sh
 $ bower install mjs
 ```
 
-### Adapters
+## Adapters
+### Json AJAX Adapter
+This adapter is based on the XMLHTTPRequest object.
 
-Json AJAX Adapter
 
 ### Todo's
 
