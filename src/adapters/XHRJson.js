@@ -52,5 +52,5 @@
         }
     };
 
-    M._jxhr = new XHRJson();
+    M.adapter = new XHRJson();
 }(M));

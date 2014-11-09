@@ -56,12 +56,12 @@ else if (typeof define === 'function' && define.amd) {
         return '/api/' + this.type + '/' + this.attr.id;
       };
 
-      if (M._jxhr === undefined) {
-        throw 'The XHR module is missing';
+      if (M.adapter === undefined) {
+        throw 'No adapter found';
       }
 
       if (!attr) {
-        M._jxhr.onDone(function(model){
+        M.adapter.onDone(function(model){
           if (model.length) {
             model.forEach(function (item) {
               models.push( new M(type, item.id, item) );
@@ -112,7 +112,7 @@ else if (typeof define === 'function' && define.amd) {
           modelType    = this.type,
           modelAdapter = this._adapter;
 
-      M._jxhr.onDone(function(newAttr){
+      M.adapter.onDone(function(newAttr){
         instances.forEach(function(model){
           if (model.type === modelType && model._adapter === modelAdapter) {
             model.attr = newAttr;
@@ -137,7 +137,7 @@ else if (typeof define === 'function' && define.amd) {
      M.prototype.get = function(callback) {
       var self = this;
 
-      M._jxhr.onDone(function(attr){
+      M.adapter.onDone(function(attr){
         self.attr = attr;
       }).ajax('get', self._adapter, false);
 
@@ -153,7 +153,7 @@ else if (typeof define === 'function' && define.amd) {
      M.prototype.delete = function(callback) {
       var self = this;
 
-      M._jxhr('delete', this._getAdapterWithoutSerializer(), false);
+      M.adapter('delete', this._getAdapterWithoutSerializer(), false);
 
       if (callback) {
         callback();
@@ -174,7 +174,7 @@ else if (typeof define === 'function' && define.amd) {
      M.create = function(type, attr) {
       var newAttr;
 
-      M._jxhr.onDone(function(attr){
+      M.adapter.onDone(function(attr){
         newAttr = attr;
       }).ajax('post', '/api/' + type + '.json', false, { attr: attr });
 
@@ -280,5 +280,5 @@ else if (typeof define === 'function' && define.amd) {
         }
     };
 
-    M._jxhr = new XHRJson();
+    M.adapter = new XHRJson();
 }(M));
