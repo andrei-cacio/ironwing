@@ -24,13 +24,13 @@ book.update();
 ### REST
 For the above example, suppose we have the book and books model and collection. For these we have the following actions with their urls:
 
-| Action           | Method | URL       | Returns    |
-| ---------------- | -------|-----------|----------- |
-| new M('book', 1) | GET    | /book/:id | Model      |
-| new M('book')    | GET    | /book     | Collection |
-| book.update()    | PUT    | /book/:id | Model      |
-| M.Create()       | POST   | /book     | Model      |
-| book.delete()    | DELETE | /book/:id | NULL       |
+| Action            | Method | URL        | Returns    |
+| ----------------- | -------|------------|----------- |
+| new M('books', 1) | GET    | /books/:id | Model      |
+| new M('books')    | GET    | /books     | Collection |
+| book.update()     | PUT    | /boosk/:id | Model      |
+| M.Create()        | POST   | /books     | Model      |
+| book.delete()     | DELETE | /books/:id | NULL       |
 
 
 ### Methods
