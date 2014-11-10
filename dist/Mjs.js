@@ -1,5 +1,3 @@
-// Custom ViewModel mapped to the TPB REST API
-//
 // constructors: Model(type)         -> Asks the API for the sepcific ResultSet (it can return an array or a single object) respecting the REST mapping
 //
 //               Model(type,id)      -> Asks the API for a specific model with the given ID (returns a single object)
@@ -10,12 +8,10 @@
 //
 // each ViewModel comes with implemeted CRUD methods which can accept a callback function for more flexibile use
 
-function M() {
+function M(type, id, attr) {
   'use strict';
 
-  var self = this;
-
-  return this.init.apply(self, arguments);
+  this.init(type, id, attr);
 }
 
 /**
@@ -42,7 +38,18 @@ else if (typeof define === 'function' && define.amd) {
 
     // Storing all instances to retrieve them using find
     // also used in syncing all models of the same type on update
-    var instances = [];
+    var instances = [],
+        _apiAddress = '/';
+
+    M.setAPIAddress = function(url) {
+      if (url[url.length] !== '/'){
+        _apiAddress = url + '/';
+      }
+      else {
+        _apiAddress = url;
+      }
+      console.info(_apiAddress);
+    };
 
     // The Model main Class and constructor
     M.prototype.init = function(type, id, attr) {
@@ -226,7 +233,8 @@ else if (typeof define === 'function' && define.amd) {
     //         return model.attr[ Object.keys(what)[0] ] === what[ Object.keys(what)[0] ]
     //     });
     // }
-}());;/**
+}());
+;/**
  * XHR is a wrapper over the XMLHttpRequest object
  * @return {Object}
  */

@@ -1,5 +1,3 @@
-// Custom ViewModel mapped to the TPB REST API
-//
 // constructors: Model(type)         -> Asks the API for the sepcific ResultSet (it can return an array or a single object) respecting the REST mapping
 //
 //               Model(type,id)      -> Asks the API for a specific model with the given ID (returns a single object)
