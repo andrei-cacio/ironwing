@@ -60,8 +60,30 @@ $ bower install mjs
 
 ## Adapters
 ### Json AJAX Adapter
-This adapter is based on the XMLHTTPRequest object.
+This adapter is based on the XMLHTTPRequest object. You can call it a wrapper over XHR. It simply implements 3 methods (for now) for interacting with AJAX requests. This adapter can pe accessed via the:
 
+```js
+M.adapter
+```
+The methods offered are:
+```js
+M.adapter.onDone( callbackFunction(response) );
+```
+```js
+M.adapter.onFail( callbackFunction() );
+```
+```js
+M.adapter.ajax(httpMethod, URL, async, data);
+```
+<i>Note:</i> The data parameter is optional and used only when sending POST or PUT requests
+
+The callback setters (<code>onDone, onFail</code>) returns the adapter object so you can chain them like you do with <code> $.ajax</code> from jQuery.
+
+In the near future I would like to add a better error suport for the <code> onFail </code> setter and add more setters like: 
+- <code> onComplete </code>
+- <code> onAlways </code>
+- <code> beforeSend </code>
+- etc.
 
 ### Todo's
 
