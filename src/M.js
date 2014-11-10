@@ -10,12 +10,10 @@
 //
 // each ViewModel comes with implemeted CRUD methods which can accept a callback function for more flexibile use
 
-function M() {
+function M(type, id, attr) {
   'use strict';
 
-  var self = this;
-
-  return this.init.apply(self, arguments);
+  this.init(type, id, attr);
 }
 
 /**
