@@ -38,34 +38,24 @@ else if (typeof define === 'function' && define.amd) {
 
     // Storing all instances to retrieve them using find
     // also used in syncing all models of the same type on update
-    var instances = [],
-        _apiAddress = '/';
-
-    M.setAPIAddress = function(url) {
-      if (url[url.length] !== '/'){
-        _apiAddress = url + '/';
-      }
-      else {
-        _apiAddress = url;
-      }
-      console.info(_apiAddress);
-    };
+    var instances = [];
 
     // The Model main Class and constructor
     M.prototype.init = function(type, id, attr) {
       var self = this,
           models = [];
 
-      this._adapter = (id) ? '/api/' + type + '/' + id + '.json' : '/api/' + type + '.json';
+      // Check if resource or collection
+      this.address = (id) ? type + '/' + id : type;
       this.type = type;
-
-      this._getAdapterWithoutSerializer = function() {
-        return '/api/' + this.type + '/' + this.attr.id;
-      };
 
       if (M.adapter === undefined) {
         throw 'No adapter found';
       }
+
+      this._getAPIWithoutSerializer = function() {
+        return M.adapter.getAPIURL() + this.type + '/' + this.attr.id;
+      };
 
       if (!attr) {
         M.adapter.onDone(function(model){
@@ -79,7 +69,7 @@ else if (typeof define === 'function' && define.amd) {
           }
         }).onFail(function(){
           throw '\nGET HTTP request failed for the resource: [' + self.type +']. \n';
-        }).ajax('get', this._adapter, false);
+        }).ajax('get', this.address, false);
 
       }
       else {
@@ -106,14 +96,18 @@ else if (typeof define === 'function' && define.amd) {
         return 1;
       };
 
+    M.useAdapter = function(adapterName, args) {
+      var adapter;
+      if (M.adapters && M.adapters.hasOwnProperty(adapterName)) {
+        adapter = M.adapters[adapterName];
+        adapter.init.apply(adapter, args);
+        
+        M.adapter = adapter;
+      }
+    };
+
     // The update method, sends all attributes via API and if the request was a success it recieves them back
     // also syncs the same models
-
-    //
-    // TODO: relationship updates
-    // BUG: ex: !! IF THE section is updated the section within the page object won't be
-    //
-
     M.prototype.update = function (callback) {
       var self = this,
           modelType    = this.type,
@@ -129,7 +123,7 @@ else if (typeof define === 'function' && define.amd) {
       .onFail(function(){
         throw 'A problem has accoured while trying to update the [' + modelType + '] model';
       })
-      .ajax('put', this._getAdapterWithoutSerializer(), false, { attr: self.attr });
+      .ajax('put', this.address, false, self.attr);
 
       if ( callback ) {
         callback();
@@ -146,7 +140,7 @@ else if (typeof define === 'function' && define.amd) {
 
       M.adapter.onDone(function(attr){
         self.attr = attr;
-      }).ajax('get', self._adapter, false);
+      }).ajax('get', this.address, false);
 
       if (callback) {
         callback();
@@ -160,7 +154,7 @@ else if (typeof define === 'function' && define.amd) {
      M.prototype.delete = function(callback) {
       var self = this;
 
-      M.adapter('delete', this._getAdapterWithoutSerializer(), false);
+      M.adapter('delete', this._getAPIWithoutSerializer(), false);
 
       if (callback) {
         callback();
@@ -183,7 +177,7 @@ else if (typeof define === 'function' && define.amd) {
 
       M.adapter.onDone(function(attr){
         newAttr = attr;
-      }).ajax('post', '/api/' + type + '.json', false, { attr: attr });
+      }).ajax('post', type, false, { attr: attr });
 
       if (!newAttr) {
         throw 'A problem has accoured while trying to create a [' + this.type + '] model';
@@ -238,14 +232,37 @@ else if (typeof define === 'function' && define.amd) {
  * XHR is a wrapper over the XMLHttpRequest object
  * @return {Object}
  */
-/* globals M:true */
+
+/* global M:false */
 (function(M){
     'use strict';
 
-    function XHRJson() {
+    function XHRJson() { 
+        this.xhr = new XMLHttpRequest();
+        this.appUrl = null;
+        this.done = null;
+        this.fail = null;
+    }
+
+    function checkURL(string) {
+        if (typeof string !== 'string') {
+            return '/';
+        }
+
+        if (string[string.length - 1] !== '/') {
+            string += '/';
+        }
+        if (string[0] !== '/') {
+            string = '/' + string;
+        }
+
+        return string;
+    }
+
+    XHRJson.prototype.init = function(url) {
         var self = this;
 
-        this.xhr = new XMLHttpRequest();
+        this.apiUrl = checkURL(url);
         this.done = null;
         this.fail = null;
 
@@ -261,7 +278,11 @@ else if (typeof define === 'function' && define.amd) {
                 self.fail.call(null);
             }
         };
-    }
+    };
+
+    XHRJson.prototype.getAPIURL = function() {
+        return this.apiUrl;
+    };
 
     XHRJson.prototype.onDone = function(callback) {
         this.done = callback;
@@ -277,7 +298,7 @@ else if (typeof define === 'function' && define.amd) {
 
     XHRJson.prototype.ajax = function(method, url, async, data) {
         method = method.toUpperCase();
-        this.xhr.open(method, url, async);
+        this.xhr.open(method, this.apiUrl + url, async);
 
         if (method === 'POST' || method === 'PUT') {
             this.xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
@@ -288,5 +309,10 @@ else if (typeof define === 'function' && define.amd) {
         }
     };
 
-    M.adapter = new XHRJson();
+    /**
+     * Inject the adapter into Mjs adapters
+     */
+    M.adapters = M.adapters || {};
+    M.adapters.JSON = new XHRJson();
+
 }(M));

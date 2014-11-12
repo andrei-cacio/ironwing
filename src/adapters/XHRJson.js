@@ -2,14 +2,37 @@
  * XHR is a wrapper over the XMLHttpRequest object
  * @return {Object}
  */
-/* globals M:true */
+
+/* global M:false */
 (function(M){
     'use strict';
 
-    function XHRJson() {
+    function XHRJson() { 
+        this.xhr = new XMLHttpRequest();
+        this.appUrl = null;
+        this.done = null;
+        this.fail = null;
+    }
+
+    function checkURL(string) {
+        if (typeof string !== 'string') {
+            return '/';
+        }
+
+        if (string[string.length - 1] !== '/') {
+            string += '/';
+        }
+        if (string[0] !== '/') {
+            string = '/' + string;
+        }
+
+        return string;
+    }
+
+    XHRJson.prototype.init = function(url) {
         var self = this;
 
-        this.xhr = new XMLHttpRequest();
+        this.apiUrl = checkURL(url);
         this.done = null;
         this.fail = null;
 
@@ -25,7 +48,11 @@
                 self.fail.call(null);
             }
         };
-    }
+    };
+
+    XHRJson.prototype.getAPIURL = function() {
+        return this.apiUrl;
+    };
 
     XHRJson.prototype.onDone = function(callback) {
         this.done = callback;
@@ -41,7 +68,7 @@
 
     XHRJson.prototype.ajax = function(method, url, async, data) {
         method = method.toUpperCase();
-        this.xhr.open(method, url, async);
+        this.xhr.open(method, this.apiUrl + url, async);
 
         if (method === 'POST' || method === 'PUT') {
             this.xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
@@ -52,5 +79,10 @@
         }
     };
 
-    M.adapter = new XHRJson();
+    /**
+     * Inject the adapter to Mjs adapters
+     */
+    M.adapters = M.adapters || {};
+    M.adapters.JSON = new XHRJson();
+
 }(M));

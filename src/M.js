@@ -45,16 +45,17 @@ else if (typeof define === 'function' && define.amd) {
       var self = this,
           models = [];
 
-      this._adapter = (id) ? '/api/' + type + '/' + id + '.json' : '/api/' + type + '.json';
+      // Check if resource or collection
+      this.address = (id) ? type + '/' + id : type;
       this.type = type;
-
-      this._getAdapterWithoutSerializer = function() {
-        return '/api/' + this.type + '/' + this.attr.id;
-      };
 
       if (M.adapter === undefined) {
         throw 'No adapter found';
       }
+
+      this._getAPIWithoutSerializer = function() {
+        return M.adapter.getAPIURL() + this.type + '/' + this.attr.id;
+      };
 
       if (!attr) {
         M.adapter.onDone(function(model){
@@ -68,7 +69,7 @@ else if (typeof define === 'function' && define.amd) {
           }
         }).onFail(function(){
           throw '\nGET HTTP request failed for the resource: [' + self.type +']. \n';
-        }).ajax('get', this._adapter, false);
+        }).ajax('get', this.address, false);
 
       }
       else {
@@ -95,14 +96,24 @@ else if (typeof define === 'function' && define.amd) {
         return 1;
       };
 
+    /**
+     * Instantiate an adapter so Mjs will use it
+     * @param  {String} adapterName The adapter's name (eg. JSON)
+     * @param  {Array}  args        An array of arguments
+     */
+    M.useAdapter = function(adapterName, args) {
+      var adapter;
+      
+      if (M.adapters && M.adapters.hasOwnProperty(adapterName)) {
+        adapter = M.adapters[adapterName];
+        adapter.init.apply(adapter, args);
+        
+        M.adapter = adapter;
+      }
+    };
+
     // The update method, sends all attributes via API and if the request was a success it recieves them back
     // also syncs the same models
-
-    //
-    // TODO: relationship updates
-    // BUG: ex: !! IF THE section is updated the section within the page object won't be
-    //
-
     M.prototype.update = function (callback) {
       var self = this,
           modelType    = this.type,
@@ -118,7 +129,7 @@ else if (typeof define === 'function' && define.amd) {
       .onFail(function(){
         throw 'A problem has accoured while trying to update the [' + modelType + '] model';
       })
-      .ajax('put', this._getAdapterWithoutSerializer(), false, { attr: self.attr });
+      .ajax('put', this.address, false, self.attr);
 
       if ( callback ) {
         callback();
@@ -135,7 +146,7 @@ else if (typeof define === 'function' && define.amd) {
 
       M.adapter.onDone(function(attr){
         self.attr = attr;
-      }).ajax('get', self._adapter, false);
+      }).ajax('get', this.address, false);
 
       if (callback) {
         callback();
@@ -149,7 +160,7 @@ else if (typeof define === 'function' && define.amd) {
      M.prototype.delete = function(callback) {
       var self = this;
 
-      M.adapter('delete', this._getAdapterWithoutSerializer(), false);
+      M.adapter('delete', this._getAPIWithoutSerializer(), false);
 
       if (callback) {
         callback();
@@ -172,7 +183,7 @@ else if (typeof define === 'function' && define.amd) {
 
       M.adapter.onDone(function(attr){
         newAttr = attr;
-      }).ajax('post', '/api/' + type + '.json', false, { attr: attr });
+      }).ajax('post', type, false, { attr: attr });
 
       if (!newAttr) {
         throw 'A problem has accoured while trying to create a [' + this.type + '] model';

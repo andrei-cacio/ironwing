@@ -1,6 +1,6 @@
 {
   "name": "Mjs",
-  "version": "0.1",
+  "version": "0.3.1",
   "description": "Mjs (M from Model from MVC) is a lightweight data layer for consuming a REST API",
   "main": "dist/mjs.js",
   "scripts": {
