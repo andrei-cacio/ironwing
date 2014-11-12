@@ -3,19 +3,24 @@
 Mjs (from Model from MVC) is a lightweight data layer for consuming a REST API. This library can be included in a micro framework or you can just simply throw it in your project and it will work. By lightweight it means it supports minimal CRUD interaction.
 
 ### Version
-0.1
+0.3
 
 ### How it works
 Mjs depends on an adapter. Out of the box it comes with a JSON Ajax adapter. In the future I hope I will offer more adapters out of the box.
 
 Here's a simple example:
 ```js
+M.useAdapter("JSON", ["/api/"]);
+
 var book = new M("books", 1); // book is a model
 var books = new M("books"); // books is a collection of book models
+
 // You can access the models attributes by the attr key
 book.attr.title = 'My new book title';
+
 // You can modify any attribute
 book.attr.author = 'John Doe';
+
 // After your are done editing, you can update it!
 // at this point a PUT request has been made and the DB is updated via the 
 // REST API
@@ -34,6 +39,10 @@ For the above example, suppose we have the book and books model and collection. 
 
 
 ### Methods
+Use a loaded adapter
+```js
+M.useAdapter(adapterName, [,args]);
+```
 Search for the <i>book</i> model with the id <i>1</i>
 
 <i>Note:</i> This method only searches in the cache. If you fetched the book collection then all books are cached so you can access any of them whenever you want in your app.
@@ -59,12 +68,22 @@ $ bower install mjs
 ```
 
 ## Adapters
-### Json AJAX Adapter
-This adapter is based on the XMLHTTPRequest object. You can call it a wrapper over XHR. It simply implements 3 methods (for now) for interacting with AJAX requests. This adapter can pe accessed via the:
-
+Mjs supports multiple adapters but only one can be used at a time (for now).
+When you include an adapter into your application, the adapter becomes available via the:
+```js
+M.adapters
+```
+by default Mjs comes with the <code> JSON </code> adapter which is described below.
+### JSON AJAX Adapter
+To intereact with your API via AJAX you ca use the JSON adapter. To use this adapter you simply call this method to let know Mjs that you wish to use this adapter for all your CRUD operations:
+```js
+M.useAdapter('JSON', ['/api']);
+```
+After this method is called you will have access to the adapter via this object:
 ```js
 M.adapter
 ```
+This adapter is based on the XMLHTTPRequest object. You can call it a wrapper over XHR. It simply implements 3 methods (for now) for interacting with AJAX requests. This adapter can pe accessed via the:
 The methods offered are:
 ```js
 M.adapter.onDone( callbackFunction(response) );
