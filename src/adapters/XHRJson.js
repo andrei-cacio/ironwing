@@ -14,6 +14,11 @@
         this.fail = null;
     }
 
+    /**
+     * Check if an URL starts and ends with /
+     * @param  {String} string URL
+     * @return {String} The fixed URL string
+     */
     function checkURL(string) {
         if (typeof string !== 'string') {
             return '/';
@@ -29,6 +34,10 @@
         return string;
     }
 
+    /**
+     * Constructor
+     * @param  {String} url The API URL
+     */
     XHRJson.prototype.init = function(url) {
         var self = this;
 
@@ -50,22 +59,43 @@
         };
     };
 
+    /**
+     * URL getter
+     * @return {String} URL string
+     */
     XHRJson.prototype.getAPIURL = function() {
         return this.apiUrl;
     };
 
+    /**
+     * Callback which is if the request is done
+     * @param  {Function} callback Callback function
+     * @return {Object}            Mjs
+     */
     XHRJson.prototype.onDone = function(callback) {
         this.done = callback;
 
         return this;
     };
 
+    /**
+     * Callback which is if the request failed
+     * @param  {Function} callback Callback function
+     * @return {Object}            Mjs
+     */
     XHRJson.prototype.onFail = function(callback) {
         this.fail = callback;
 
         return this;
     };
 
+    /**
+     * Perform an AJAX request
+     * @param  {String} method HTTP method
+     * @param  {String} url    URL string
+     * @param  {Boolean} async 
+     * @param  {Object} data   POST/PUT data
+     */
     XHRJson.prototype.ajax = function(method, url, async, data) {
         method = method.toUpperCase();
         this.xhr.open(method, this.apiUrl + url, async);
