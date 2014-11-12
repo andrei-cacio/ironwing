@@ -1,0 +1,30 @@
+{
+  "name": "Mjs",
+  "version": "0.3.1",
+  "homepage": "https://github.com/andrei-cacio/mjs",
+  "description": "Mjs (M from Model from MVC) is a lightweight data layer for consuming a REST API",
+  "main": "dist/mjs.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "Model",
+    "MVC",
+    "Data",
+    "Data Layer",
+    "Persistence",
+    "REST",
+    "CRUD"
+  ],
+  "authors": [
+    "Andrei Cacio"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
