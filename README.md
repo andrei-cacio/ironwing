@@ -64,7 +64,7 @@ M.Create('books', { title: 'Some title', author: 'Some author });
 You need bower installed globally:
 
 ```sh
-$ bower install mjs
+$ bower install m-js
 ```
 
 ## Adapters
