@@ -1,3 +1,5 @@
+[![Bower version](https://badge.fury.io/bo/m-js.svg)](http://badge.fury.io/bo/m-js)
+
 # Mjs
 
 Mjs (from Model from MVC) is a lightweight data layer for consuming a REST API. This library can be included in a micro framework or you can just simply throw it in your project and it will work. By lightweight it means it supports minimal CRUD interaction.
@@ -22,7 +24,7 @@ book.attr.title = 'My new book title';
 book.attr.author = 'John Doe';
 
 // After your are done editing, you can update it!
-// at this point a PUT request has been made and the DB is updated via the 
+// at this point a PUT request has been made and the DB is updated via the
 // REST API
 book.update();
 ```
@@ -98,7 +100,7 @@ M.adapter.ajax(httpMethod, URL, async, data);
 
 The callback setters (<code>onDone, onFail</code>) returns the adapter object so you can chain them like you do with <code> $.ajax</code> from jQuery.
 
-In the near future I would like to add a better error suport for the <code> onFail </code> setter and add more setters like: 
+In the near future I would like to add a better error suport for the <code> onFail </code> setter and add more setters like:
 - <code> onComplete </code>
 - <code> onAlways </code>
 - <code> beforeSend </code>
