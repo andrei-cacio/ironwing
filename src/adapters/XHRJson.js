@@ -3,11 +3,11 @@
  * @return {Object}
  */
 
-/* global M:false */
-(function(M){
+/* global IW:false */
+(function(IW){
     'use strict';
 
-    function XHRJson() { 
+    function XHRJson() {
         this.xhr = new XMLHttpRequest();
         this.appUrl = null;
         this.done = null;
@@ -53,7 +53,7 @@
 
                 self.done.call(null, responseObj);
             }
-            else if (self.xhr.readyState === 4 && self.xhr.status === 404 && typeof self.fail === 'function') { 
+            else if (self.xhr.readyState === 4 && self.xhr.status === 404 && typeof self.fail === 'function') {
                 self.fail.call(null);
             }
         };
@@ -93,7 +93,7 @@
      * Perform an AJAX request
      * @param  {String} method HTTP method
      * @param  {String} url    URL string
-     * @param  {Boolean} async 
+     * @param  {Boolean} async
      * @param  {Object} data   POST/PUT data
      */
     XHRJson.prototype.ajax = function(method, url, async, data) {
@@ -103,7 +103,7 @@
         if (method === 'POST' || method === 'PUT') {
             this.xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
             this.xhr.send(JSON.stringify(data));
-        } 
+        }
         else {
             this.xhr.send();
         }
@@ -112,7 +112,7 @@
     /**
      * Inject the adapter to Mjs adapters
      */
-    M.adapters = M.adapters || {};
-    M.adapters.JSON = new XHRJson();
+    IW.adapters = IW.adapters || {};
+    IW.adapters.JSON = new XHRJson();
 
-}(M));
+}(IW));

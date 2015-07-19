@@ -8,7 +8,7 @@
 //
 // each ViewModel comes with implemeted CRUD methods which can accept a callback function for more flexibile use
 
-function M(type, id, attr) {
+function IW(type, id, attr) {
   'use strict';
 
   this.init(type, id, attr);
@@ -18,7 +18,7 @@ function M(type, id, attr) {
  * CommonJS support
  */
 if (typeof module === 'object') {
-  module.exports = M;
+  module.exports = IW;
 }
 /**
  * AMD support
@@ -27,7 +27,7 @@ else if (typeof define === 'function' && define.amd) {
   define(function(){
     'use strict';
 
-    return M;
+    return IW;
   });
 }
 
@@ -41,7 +41,7 @@ else if (typeof define === 'function' && define.amd) {
     var instances = [];
 
     // The Model main Class and constructor
-    M.prototype.init = function(type, id, attr) {
+    IW.prototype.init = function(type, id, attr) {
       var self = this,
           models = [];
 
@@ -49,19 +49,19 @@ else if (typeof define === 'function' && define.amd) {
       this.address = (id) ? type + '/' + id : type;
       this.type = type;
 
-      if (M.adapter === undefined) {
+      if (IW.adapter === undefined) {
         throw 'No adapter found';
       }
 
       this._getAPIWithoutSerializer = function() {
-        return M.adapter.getAPIURL() + this.type + '/' + this.attr.id;
+        return IW.adapter.getAPIURL() + this.type + '/' + this.attr.id;
       };
 
       if (!attr) {
-        M.adapter.onDone(function(model){
+        IW.adapter.onDone(function(model){
           if (model.length) {
             model.forEach(function (item) {
-              models.push( new M(type, item.id, item) );
+              models.push( new IW(type, item.id, item) );
             });
           }
           else {
@@ -86,7 +86,7 @@ else if (typeof define === 'function' && define.amd) {
 
         // If the construcotr is called to fetch a model that is already in the local memory
         // then the local instance is refreshed with the model
-        var found = M.find(this.type, this.attr.id );
+        var found = IW.find(this.type, this.attr.id );
         if ( !found ) {
           instances.push(this);
         } else {
@@ -101,25 +101,25 @@ else if (typeof define === 'function' && define.amd) {
      * @param  {String} adapterName The adapter's name (eg. JSON)
      * @param  {Array}  args        An array of arguments
      */
-    M.useAdapter = function(adapterName, args) {
+    IW.useAdapter = function(adapterName, args) {
       var adapter;
-      
-      if (M.adapters && M.adapters.hasOwnProperty(adapterName)) {
-        adapter = M.adapters[adapterName];
+
+      if (IW.adapters && IW.adapters.hasOwnProperty(adapterName)) {
+        adapter = IW.adapters[adapterName];
         adapter.init.apply(adapter, args);
-        
-        M.adapter = adapter;
+
+        IW.adapter = adapter;
       }
     };
 
     // The update method, sends all attributes via API and if the request was a success it recieves them back
     // also syncs the same models
-    M.prototype.update = function (callback) {
+    IW.prototype.update = function (callback) {
       var self = this,
           modelType    = this.type,
           modelAdapter = this._adapter;
 
-      M.adapter.onDone(function(newAttr){
+      IW.adapter.onDone(function(newAttr){
         instances.forEach(function(model){
           if (model.type === modelType && model._adapter === modelAdapter) {
             model.attr = newAttr;
@@ -141,10 +141,10 @@ else if (typeof define === 'function' && define.amd) {
      * Get a model
      * @param  {Function} callback [optional]
      */
-     M.prototype.get = function(callback) {
+     IW.prototype.get = function(callback) {
       var self = this;
 
-      M.adapter.onDone(function(attr){
+      IW.adapter.onDone(function(attr){
         self.attr = attr;
       }).ajax('get', this.address, false);
 
@@ -157,10 +157,10 @@ else if (typeof define === 'function' && define.amd) {
      * Delete a model
      * @param  {Function} callback [optional]
      */
-     M.prototype.delete = function(callback) {
+     IW.prototype.delete = function(callback) {
       var self = this;
 
-      M.adapter('delete', this._getAPIWithoutSerializer(), false);
+      IW.adapter('delete', this._getAPIWithoutSerializer(), false);
 
       if (callback) {
         callback();
@@ -178,10 +178,10 @@ else if (typeof define === 'function' && define.amd) {
      * @param  {String} type The model type
      * @param  {Object} attr The model's attributes
      */
-     M.create = function(type, attr) {
+     IW.create = function(type, attr) {
       var newAttr;
 
-      M.adapter.onDone(function(attr){
+      IW.adapter.onDone(function(attr){
         newAttr = attr;
       }).ajax('post', type, false, { attr: attr });
 
@@ -198,7 +198,7 @@ else if (typeof define === 'function' && define.amd) {
      * @param  {Number} id   The models'id
      * @return {M}
      */
-     M.find = function(type, id) {
+     IW.find = function(type, id) {
 
       var found;
 
@@ -217,7 +217,7 @@ else if (typeof define === 'function' && define.amd) {
      * @param  {String} type The mode's type
      * @return {M}
      */
-     M.findAll = function(type) {
+     IW.findAll = function(type) {
 
       return instances.filter(function(model){
         return model.type === type;
@@ -226,8 +226,8 @@ else if (typeof define === 'function' && define.amd) {
 
     // Search by keys
 
-    // M.search = function(type, what){
-    //     var models = new Model(type);
+    // IW.search = function(type, what){
+    //     var models = new IW(type);
 
     //     return models.filter(function(model){
     //         return model.attr[ Object.keys(what)[0] ] === what[ Object.keys(what)[0] ]

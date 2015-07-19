@@ -8,9 +8,9 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     header = require('gulp-header'),
     pkg = require('./package.json'),
-    M = {};
+    IW = {};
 
-M.banner = [
+IW.banner = [
   '/**',
   ' ** <%= pkg.name %> - <%= pkg.description %>',
   ' ** @author <%= pkg.author %>',
@@ -19,31 +19,31 @@ M.banner = [
   ''
 ].join('\n');
 
-M._paths = {
+IW._paths = {
     js: './src/**/*.js'
 };
 
 gulp.task('build', ['lint'], function() {
-    gulp.src(M._paths.js)
-        .pipe(concat('M.js'))
-        .pipe(header(M.banner, { pkg: pkg}))
+    gulp.src(IW._paths.js)
+        .pipe(concat('ironwing.js'))
+        .pipe(header(IW.banner, { pkg: pkg}))
         .pipe(gulp.dest('dist'));
 
-    gulp.src(M._paths.js)
-        .pipe(concat('M.min.js'))
+    gulp.src(IW._paths.js)
+        .pipe(concat('ironwing.min.js'))
         .pipe(uglify())
-        .pipe(header(M.banner, { pkg: pkg}))
+        .pipe(header(IW.banner, { pkg: pkg}))
         .pipe(gulp.dest('dist'));
 });
 
 gulp.task('lint', function() {
-    return gulp.src(M._paths.js)
+    return gulp.src(IW._paths.js)
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish'))
         .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('watch', function() {
-    gulp.watch(M._paths.js, ['lint']);
+    gulp.watch(IW._paths.js, ['lint']);
 });
 
