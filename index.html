@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>Ironwing by andrei-cacio</title>
+    <title>ironwingjs by andrei-cacio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -11,8 +11,8 @@
   </head>
   <body>
     <section class="page-header">
-      <h1 class="project-name">Ironwing</h1>
-      <h2 class="project-tagline">Ironwing is a lightweight front-end library for model like data representations</h2>
+      <h1 class="project-name">ironwingjs</h1>
+      <h2 class="project-tagline">ironwingjs is a lightweight front-end library for model like data representations</h2>
       <a href="https://github.com/andrei-cacio/ironwing" class="btn">View on GitHub</a>
       <a href="https://github.com/andrei-cacio/ironwing/zipball/master" class="btn">Download .zip</a>
       <a href="https://github.com/andrei-cacio/ironwing/tarball/master" class="btn">Download .tar.gz</a>
@@ -32,14 +32,14 @@
 <h3>
 <a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>How it works</h3>
 
-<p>Mjs depends on an adapter. Out of the box it comes with a JSON Ajax adapter. In the future I hope I will offer more adapters out of the box.</p>
+<p>Ironwing depends on an adapter. Out of the box it comes with a JSON Ajax adapter. In the future I hope I will offer more adapters out of the box.</p>
 
 <p>Here's a simple example:</p>
 
-<div class="highlight highlight-js"><pre>M.useAdapter(<span class="pl-s"><span class="pl-pds">"</span>JSON<span class="pl-pds">"</span></span>, [<span class="pl-s"><span class="pl-pds">"</span>/api/<span class="pl-pds">"</span></span>]);
+<div class="highlight highlight-js"><pre><span class="pl-c1">IW</span>.useAdapter(<span class="pl-s"><span class="pl-pds">"</span>JSON<span class="pl-pds">"</span></span>, [<span class="pl-s"><span class="pl-pds">"</span>/api/<span class="pl-pds">"</span></span>]);
 
-<span class="pl-k">var</span> book <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">M</span>(<span class="pl-s"><span class="pl-pds">"</span>books<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>); <span class="pl-c">// book is a model</span>
-<span class="pl-k">var</span> books <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">M</span>(<span class="pl-s"><span class="pl-pds">"</span>books<span class="pl-pds">"</span></span>); <span class="pl-c">// books is a collection of book models</span>
+<span class="pl-k">var</span> book <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">IW</span>(<span class="pl-s"><span class="pl-pds">"</span>books<span class="pl-pds">"</span></span>, <span class="pl-c1">1</span>); <span class="pl-c">// book is a model</span>
+<span class="pl-k">var</span> books <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">IW</span>(<span class="pl-s"><span class="pl-pds">"</span>books<span class="pl-pds">"</span></span>); <span class="pl-c">// books is a collection of book models</span>
 
 <span class="pl-c">// You can access the models attributes by the attr key</span>
 book.attr.<span class="pl-c1">title</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>My new book title<span class="pl-pds">'</span></span>;
@@ -68,13 +68,13 @@ book.update();</pre></div>
 </thead>
 <tbody>
 <tr>
-<td>new M('books', 1)</td>
+<td>new IW('books', 1)</td>
 <td>GET</td>
 <td>/books/:id</td>
 <td>Model</td>
 </tr>
 <tr>
-<td>new M('books')</td>
+<td>new IW('books')</td>
 <td>GET</td>
 <td>/books</td>
 <td>Collection</td>
@@ -86,7 +86,7 @@ book.update();</pre></div>
 <td>Model</td>
 </tr>
 <tr>
-<td>M.Create()</td>
+<td>IW.Create()</td>
 <td>POST</td>
 <td>/books</td>
 <td>Model</td>
@@ -105,21 +105,21 @@ book.update();</pre></div>
 
 <p>Use a loaded adapter</p>
 
-<div class="highlight highlight-js"><pre>M.useAdapter(adapterName, [,args]);</pre></div>
+<div class="highlight highlight-js"><pre><span class="pl-c1">IW</span>.useAdapter(adapterName, [,args]);</pre></div>
 
 <p>Search for the <i>book</i> model with the id <i>1</i></p>
 
 <p><i>Note:</i> This method only searches in the cache. If you fetched the book collection then all books are cached so you can access any of them whenever you want in your app.</p>
 
-<div class="highlight highlight-js"><pre>M.<span class="pl-c1">find</span>(<span class="pl-s"><span class="pl-pds">'</span>books<span class="pl-pds">'</span></span>, <span class="pl-c1">1</span>);</pre></div>
+<div class="highlight highlight-js"><pre><span class="pl-c1">IW</span>.<span class="pl-c1">find</span>(<span class="pl-s"><span class="pl-pds">'</span>books<span class="pl-pds">'</span></span>, <span class="pl-c1">1</span>);</pre></div>
 
 <p>Same as <i> find </i> but you search for a collection</p>
 
-<div class="highlight highlight-js"><pre>M.findAll(<span class="pl-s"><span class="pl-pds">'</span>books<span class="pl-pds">'</span></span>);</pre></div>
+<div class="highlight highlight-js"><pre><span class="pl-c1">IW</span>.findAll(<span class="pl-s"><span class="pl-pds">'</span>books<span class="pl-pds">'</span></span>);</pre></div>
 
-<p>Creates a new Model with the given attributes</p>
+<p>Creates a new model with the given attributes</p>
 
-<div class="highlight highlight-js"><pre>M.Create(<span class="pl-s"><span class="pl-pds">'</span>books<span class="pl-pds">'</span></span>, { title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Some title<span class="pl-pds">'</span></span>, author<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Some author });</span></pre></div>
+<div class="highlight highlight-js"><pre><span class="pl-c1">IW</span>.Create(<span class="pl-s"><span class="pl-pds">'</span>books<span class="pl-pds">'</span></span>, { title<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Some title<span class="pl-pds">'</span></span>, author<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Some author });</span></pre></div>
 
 <h3>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
@@ -131,32 +131,32 @@ book.update();</pre></div>
 <h2>
 <a id="adapters" class="anchor" href="#adapters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adapters</h2>
 
-<p>Mjs supports multiple adapters but only one can be used at a time (for now).
+<p>Ironwing supports multiple adapters but only one can be used at a time (for now).
 When you include an adapter into your application, the adapter becomes available via the:</p>
 
-<div class="highlight highlight-js"><pre>M.adapters</pre></div>
+<div class="highlight highlight-js"><pre><span class="pl-c1">IW</span>.adapters</pre></div>
 
-<p>by default Mjs comes with the <code> JSON </code> adapter which is described below.</p>
+<p>by default Ironwing comes with the <code> JSON </code> adapter which is described below.</p>
 
 <h3>
 <a id="json-ajax-adapter" class="anchor" href="#json-ajax-adapter" aria-hidden="true"><span class="octicon octicon-link"></span></a>JSON AJAX Adapter</h3>
 
-<p>To intereact with your API via AJAX you ca use the JSON adapter. To use this adapter you simply call this method to let know Mjs that you wish to use this adapter for all your CRUD operations:</p>
+<p>To intereact with your API via AJAX you ca use the JSON adapter. To use this adapter you simply call this method to let know Ironwing that you wish to use this adapter for all your CRUD operations:</p>
 
-<div class="highlight highlight-js"><pre>M.useAdapter(<span class="pl-s"><span class="pl-pds">'</span>JSON<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>/api<span class="pl-pds">'</span></span>]);</pre></div>
+<div class="highlight highlight-js"><pre><span class="pl-c1">IW</span>.useAdapter(<span class="pl-s"><span class="pl-pds">'</span>JSON<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>/api<span class="pl-pds">'</span></span>]);</pre></div>
 
 <p>After this method is called you will have access to the adapter via this object:</p>
 
-<div class="highlight highlight-js"><pre>M.adapter</pre></div>
+<div class="highlight highlight-js"><pre><span class="pl-c1">IW</span>.adapter</pre></div>
 
 <p>This adapter is based on the XMLHTTPRequest object. You can call it a wrapper over XHR. It simply implements 3 methods (for now) for interacting with AJAX requests. This adapter can pe accessed via the:
 The methods offered are:</p>
 
-<div class="highlight highlight-js"><pre>M.adapter.onDone( callbackFunction(response) );</pre></div>
+<div class="highlight highlight-js"><pre><span class="pl-c1">IW</span>.adapter.onDone( callbackFunction(response) );</pre></div>
 
-<div class="highlight highlight-js"><pre>M.adapter.onFail( callbackFunction() );</pre></div>
+<div class="highlight highlight-js"><pre><span class="pl-c1">IW</span>.adapter.onFail( callbackFunction() );</pre></div>
 
-<div class="highlight highlight-js"><pre>M.adapter.ajax(httpMethod, <span class="pl-c1">URL</span>, async, data);</pre></div>
+<div class="highlight highlight-js"><pre><span class="pl-c1">IW</span>.adapter.ajax(httpMethod, <span class="pl-c1">URL</span>, async, data);</pre></div>
 
 <p><i>Note:</i> The data parameter is optional and used only when sending POST or PUT requests</p>
 
@@ -171,17 +171,8 @@ The methods offered are:</p>
 <li>etc.</li>
 </ul>
 
-<h3>
-<a id="todos" class="anchor" href="#todos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Todo's</h3>
-
-<ul>
-<li>Offer more adapters</li>
-<li>Mocking</li>
-<li>Tests</li>
-</ul>
-
       <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/andrei-cacio/ironwing">Ironwing</a> is maintained by <a href="https://github.com/andrei-cacio">andrei-cacio</a>.</span>
+        <span class="site-footer-owner"><a href="https://github.com/andrei-cacio/ironwing">ironwingjs</a> is maintained by <a href="https://github.com/andrei-cacio">andrei-cacio</a>.</span>
 
         <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
