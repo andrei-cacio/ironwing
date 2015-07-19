@@ -64,10 +64,10 @@ IW.Create('books', { title: 'Some title', author: 'Some author });
 
 ### Installation
 
-You need bower installed globally:
-
 ```sh
-$ bower install m-js
+$ bower install ironwing
+# or
+$ npm install ironwing
 ```
 
 ## Adapters
