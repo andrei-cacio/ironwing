@@ -1,6 +1,7 @@
-[![Bower version](https://badge.fury.io/bo/m-js.svg)](http://badge.fury.io/bo/m-js)
+[![npm version](https://badge.fury.io/js/ironwing.svg)](http://badge.fury.io/js/ironwing)
+[![Bower version](https://badge.fury.io/bo/ironwing.svg)](http://badge.fury.io/bo/ironwing)
 
-# Ironwing
+# ironwing
 
 Ironwing (from Model from MVC) is a lightweight data layer for consuming a REST API. This library can be included in a micro framework or you can just simply throw it in your project and it will work. By lightweight it means it supports minimal CRUD interaction.
 
