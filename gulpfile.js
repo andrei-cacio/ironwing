@@ -3,10 +3,10 @@
 require('jshint-stylish');
 
 var gulp = require('gulp'),
-    uglify = require('gulp-uglify'),
-    concat = require('gulp-concat'),
+    uglify = require('gulp-uglifyjs'),
     jshint = require('gulp-jshint'),
     header = require('gulp-header'),
+    browserify = require('gulp-browserify'),
     pkg = require('./package.json'),
     IW = {};
 
@@ -20,18 +20,19 @@ IW.banner = [
 ].join('\n');
 
 IW._paths = {
-    js: './src/**/*.js'
+    js: './src/ironwing.js'
 };
+IW.minifiedName = 'ironwing.min.js';
 
 gulp.task('build', ['lint'], function() {
     gulp.src(IW._paths.js)
-        .pipe(concat('ironwing.js'))
-        .pipe(header(IW.banner, { pkg: pkg}))
-        .pipe(gulp.dest('dist'));
-
-    gulp.src(IW._paths.js)
-        .pipe(concat('ironwing.min.js'))
-        .pipe(uglify())
+        .pipe(browserify({
+          insertGlobals : true,
+          debug : false
+        }))
+        .pipe(uglify(IW.minifiedName, {
+          mangle: false
+        }))
         .pipe(header(IW.banner, { pkg: pkg}))
         .pipe(gulp.dest('dist'));
 });
