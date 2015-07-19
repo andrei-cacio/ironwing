@@ -1,6 +1,6 @@
 {
   "name": "ironwing",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Ironwing is a lightweight front-end data library for model like data representations",
   "main": "dist/irowing.js",
   "scripts": {
