@@ -6,7 +6,7 @@
 ironwing is a lightweight library for transforming your api outputs into model like pretty representations on which you can then do CRUD operations. It's similar to ORM like objects. Ironwing is great for your SPA application because you can integrate it with any framework or project. It makes JSON data management easy.
 
 ### Version
-0.3
+0.5.1
 
 ### How it works
 ironwing uses an adapter to comunicate with your restful api. By default it comes with a builtin XHR json adapter.
