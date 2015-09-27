@@ -1,15 +1,15 @@
 [![npm version](https://badge.fury.io/js/ironwing.svg)](http://badge.fury.io/js/ironwing)
 [![Bower version](https://badge.fury.io/bo/ironwing.svg)](http://badge.fury.io/bo/ironwing)
 
-# ironwing
+# About
 
-Ironwing (from Model from MVC) is a lightweight data layer for consuming a REST API. This library can be included in a micro framework or you can just simply throw it in your project and it will work. By lightweight it means it supports minimal CRUD interaction.
+ironwing is a lightweight library for transforming your api outputs into model like pretty representations on which you can then do CRUD operations. It's similar to ORM like objects. Ironwing is great for your SPA application because you can integrate it with any framework or project. It makes JSON data management easy.
 
 ### Version
-0.3
+0.5.1
 
 ### How it works
-Ironwing depends on an adapter. Out of the box it comes with a JSON Ajax adapter. In the future I hope I will offer more adapters out of the box.
+ironwing uses an adapter to comunicate with your restful api. By default it comes with a builtin XHR json adapter.
 
 Here's a simple example:
 ```js
@@ -64,10 +64,10 @@ IW.Create('books', { title: 'Some title', author: 'Some author });
 
 ### Installation
 
-You need bower installed globally:
-
 ```sh
-$ bower install m-js
+$ bower install ironwing
+# or
+$ npm install ironwing
 ```
 
 ## Adapters
