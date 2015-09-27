@@ -11,7 +11,7 @@
 'use strict';
 
 var XHRJson = require('./adapters/XHRJson'),
-    _ = require('lodash/string/camelCase');
+    camelCase = require('lodash/string/camelCase');
 
 function IW(type, id, attr) {
   return this.init(type, id, attr);
@@ -210,7 +210,7 @@ function __toCamel(obj) {
       key;
 
   for (key in obj) {
-    newObj[_.camelCase(key)] = obj[key];
+    newObj[camelCase(key)] = obj[key];
   }
 
   return newObj;
