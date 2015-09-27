@@ -44,7 +44,7 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('fail'));
 });
 
-gulp.task('watch', function() {
+gulp.task('default', function() {
     gulp.watch(IW._paths.js, ['lint']);
 });
 
