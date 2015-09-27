@@ -210,6 +210,9 @@ function __toCamel(obj) {
       key;
 
   for (key in obj) {
+    if (typeof obj[key] === 'object') {
+      obj[key] = __toCamel(obj[key]);
+    }
     newObj[camelCase(key)] = obj[key];
   }
 
