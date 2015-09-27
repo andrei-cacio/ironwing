@@ -4,7 +4,8 @@
   "description": "Ironwing is a lightweight front-end data library for model like data representations",
   "main": "dist/irowing.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "start": "gulp"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   },
   "homepage": "https://github.com/andrei-cacio/ironwing",
   "devDependencies": {
+    "chai": "^3.3.0",
     "gulp": "^3.8.11",
     "gulp-browserify": "^0.5.1",
     "gulp-concat": "^2.5.2",

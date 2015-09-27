@@ -11,7 +11,7 @@
 'use strict';
 
 var XHRJson = require('./adapters/XHRJson'),
-    camelCase = require('lodash/string/camelCase');
+    utils = require('./utils');
 
 function IW(type, id, attr) {
   return this.init(type, id, attr);
@@ -46,7 +46,7 @@ IW.prototype.init = function(type, id, attr) {
         });
       }
       else {
-        self.attr = __toCamel(model);
+        self.attr = utils.toCamel(model);
       }
     }).onFail(function(){
       throw '\nGET HTTP request failed for the resource: [' + self.type +']. \n';
@@ -54,7 +54,7 @@ IW.prototype.init = function(type, id, attr) {
 
   }
   else {
-    this.attr = __toCamel(attr);
+    this.attr = utils.toCamel(attr);
 
     if(!this.attr.id) {
       this.attr.id = id;
@@ -204,20 +204,6 @@ IW.prototype.update = function (callback) {
     return model.type === type;
   });
 };
-
-function __toCamel(obj) {
-  var newObj = {},
-      key;
-
-  for (key in obj) {
-    if (typeof obj[key] === 'object') {
-      obj[key] = __toCamel(obj[key]);
-    }
-    newObj[camelCase(key)] = obj[key];
-  }
-
-  return newObj;
-}
 
 /**
  * [__syncObjects description] draft
