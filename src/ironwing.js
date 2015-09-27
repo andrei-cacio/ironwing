@@ -219,6 +219,25 @@ function __toCamel(obj) {
   return newObj;
 }
 
+/**
+ * [__syncObjects description] draft
+ * @param  {[type]} obj       [description]
+ * @param  {[type]} camledObj [description]
+ * @return {[type]}           [description]
+ */
+function __syncObjects(obj, newObj) {
+  var key;
+
+  for (key in obj) {
+    if (typeof obj[key] === 'object') {
+      obj[key] = __syncObjects(obj[key], newObj[camelCasel(key)]);
+    }
+    else {
+      return newObj[camelCase(key)];
+    }
+  }
+}
+
 // Search by keys
 
 // IW.search = function(type, what){
