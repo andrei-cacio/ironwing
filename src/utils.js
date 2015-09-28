@@ -2,6 +2,30 @@
 
 var camelCase = require('lodash/string/camelCase');
 
+module.exports = {
+    toCamel: __toCamel,
+    syncObjects: __syncObjects
+};
+
+/**
+ * [__syncObjects description] draft
+ * @param  {[type]} obj       [description]
+ * @param  {[type]} camledObj [description]
+ * @return {[type]}           [description]
+ */
+function __syncObjects(obj, newObj) {
+  var key;
+
+  for (key in obj) {
+    if (typeof obj[key] === 'object') {
+      obj[key] = __syncObjects(obj[key], newObj[camelCase(key)]);
+    }
+    else {
+      return newObj[camelCase(key)];
+    }
+  }
+}
+
 /**
  * Convert all object attrs to camelCase naming convetsion
  * @param  {Object} obj
@@ -20,7 +44,3 @@ function __toCamel(obj) {
 
   return newObj;
 }
-
-module.exports = {
-    toCamel: __toCamel
-};
