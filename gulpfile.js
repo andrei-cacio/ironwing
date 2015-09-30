@@ -3,7 +3,8 @@
 require('jshint-stylish');
 
 var gulp = require('gulp'),
-    uglify = require('gulp-uglifyjs'),
+    uglify = require('gulp-uglify'),
+    sourcemaps = require('gulp-sourcemaps'),
     jshint = require('gulp-jshint'),
     header = require('gulp-header'),
     browserify = require('gulp-browserify'),
@@ -43,15 +44,17 @@ gulp.task('build', ['lint'], function() {
 
 gulp.task('scripts', ['lint'], function() {
   gulp.src(IW._paths.main)
+        .pipe(sourcemaps.init())
         .pipe(browserify({
           insertGlobals : true,
           debug : false
         }))
-        .pipe(uglify(IW.minifiedName, {
+        .pipe(uglify({
           mangle: false,
           outSourceMap: true
         }))
         .pipe(header(IW.banner, { pkg: pkg}))
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(IW._paths.demoJS));
 });
 
