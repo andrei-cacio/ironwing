@@ -9,6 +9,7 @@ var gulp = require('gulp'),
     header = require('gulp-header'),
     browserify = require('gulp-browserify'),
     webserver = require('gulp-webserver'),
+    rename = require('gulp-rename'),
     pkg = require('./package.json'),
     IW = {};
 
@@ -35,10 +36,11 @@ gulp.task('build', ['lint'], function() {
           insertGlobals : true,
           debug : false
         }))
-        .pipe(uglify(IW.minifiedName, {
+        .pipe(uglify({
           mangle: false
         }))
         .pipe(header(IW.banner, { pkg: pkg}))
+        .pipe(rename('ironwing.min.js'))
         .pipe(gulp.dest('dist'));
 });
 
