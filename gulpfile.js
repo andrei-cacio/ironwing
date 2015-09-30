@@ -7,6 +7,7 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     header = require('gulp-header'),
     browserify = require('gulp-browserify'),
+    webserver = require('gulp-webserver'),
     pkg = require('./package.json'),
     IW = {};
 
@@ -20,12 +21,15 @@ IW.banner = [
 ].join('\n');
 
 IW._paths = {
-    js: './src/ironwing.js'
+    main: './src/index.js',
+    js: './src/**/*.js',
+    demo: './demo',
+    demoJS: './demo/js'
 };
 IW.minifiedName = 'ironwing.min.js';
 
 gulp.task('build', ['lint'], function() {
-    gulp.src(IW._paths.js)
+    gulp.src(IW._paths.main)
         .pipe(browserify({
           insertGlobals : true,
           debug : false
@@ -37,6 +41,20 @@ gulp.task('build', ['lint'], function() {
         .pipe(gulp.dest('dist'));
 });
 
+gulp.task('scripts', ['lint'], function() {
+  gulp.src(IW._paths.main)
+        .pipe(browserify({
+          insertGlobals : true,
+          debug : false
+        }))
+        .pipe(uglify(IW.minifiedName, {
+          mangle: false,
+          outSourceMap: true
+        }))
+        .pipe(header(IW.banner, { pkg: pkg}))
+        .pipe(gulp.dest(IW._paths.demoJS));
+});
+
 gulp.task('lint', function() {
     return gulp.src(IW._paths.js)
         .pipe(jshint())
@@ -44,7 +62,13 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('fail'));
 });
 
-gulp.task('default', function() {
-    gulp.watch(IW._paths.js, ['lint']);
+gulp.task('webserver', function() {
+  gulp.src(IW._paths.demo)
+    .pipe(webserver({
+      open: true
+    }));
 });
 
+gulp.task('default', ['webserver'], function() {
+    gulp.watch(IW._paths.js, ['scripts']);
+});

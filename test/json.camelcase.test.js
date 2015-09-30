@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    iwUtils = require('../src/utils');
+    iwUtils = require('../src/core/utils');
 
 describe('JSON', function() {
     describe('#camelCase', function() {
