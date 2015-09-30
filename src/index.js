@@ -13,10 +13,6 @@
 var XHRJson = require('./adapters/XHRJson'),
     IW = require('./core/iw');
 
-var caca = require('./caca');
-
-caca();
-
 /**
  * Inject the adapter to IWjs adapters
  */
