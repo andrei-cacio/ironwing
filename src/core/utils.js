@@ -35,9 +35,11 @@ function __syncObjects(obj, newObj) {
       obj[key] = __syncObjects(obj[key], newObj[camelCase(key)]);
     }
     else {
-      return newObj[camelCase(key)];
+      obj[key] = newObj[camelCase(key)];
+
     }
   }
+  return obj;
 }
 
 

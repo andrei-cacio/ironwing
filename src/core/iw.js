@@ -1,8 +1,9 @@
 'use strict';
 
 var utils = require('./utils');
+var original = {};
 
-function IW(type, id, attr) {
+function IW(type, id, attr) {  
   return this.init(type, id, attr);
 }
 
@@ -35,6 +36,7 @@ IW.prototype.init = function(type, id, attr) {
         });
       }
       else {
+        original = model;
         self.attr = utils.toCamel(model);
       }
     }).onFail(function(){
@@ -43,6 +45,7 @@ IW.prototype.init = function(type, id, attr) {
 
   }
   else {
+    original = attr;
     this.attr = utils.toCamel(attr);
 
     if(!this.attr.id) {
@@ -89,9 +92,12 @@ IW.prototype.update = function (callback) {
       modelType    = this.type,
       modelAdapter = this._adapter;
 
+  self.attr = utils.syncObjects(original, self.attr);
+
   IW.adapter.onDone(function(newAttr){
     instances.forEach(function(model){
       if (model.type === modelType && model._adapter === modelAdapter) {
+
         model.attr = newAttr;
       }
     });
