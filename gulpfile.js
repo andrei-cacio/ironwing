@@ -7,10 +7,12 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     jshint = require('gulp-jshint'),
     header = require('gulp-header'),
-    browserify = require('gulp-browserify'),
+    browserify = require('browserify'),
     webserver = require('gulp-webserver'),
     rename = require('gulp-rename'),
     pkg = require('./package.json'),
+    source = require('vinyl-source-stream'),
+    buffer = require('vinyl-buffer'),
     IW = {};
 
 IW.banner = [
@@ -31,31 +33,32 @@ IW._paths = {
 IW.minifiedName = 'ironwing.min.js';
 
 gulp.task('build', ['lint'], function() {
-    gulp.src(IW._paths.main)
-        .pipe(browserify({
-          insertGlobals : true,
-          debug : false
-        }))
-        .pipe(uglify({
-          mangle: false
-        }))
-        .pipe(header(IW.banner, { pkg: pkg}))
+  var b = browserify({
+    entries: IW._paths.main,
+    debug: true
+  });
+
+  return b.bundle()
+         .pipe(source('app.min.js'))
+         .pipe(buffer())
+         .pipe(uglify())
+        .pipe(header(IW.banner, { pkg: pkg }))
         .pipe(rename('ironwing.min.js'))
         .pipe(gulp.dest('dist'));
 });
 
 gulp.task('scripts', ['lint'], function() {
-  gulp.src(IW._paths.main)
-        .pipe(sourcemaps.init())
-        .pipe(browserify({
-          insertGlobals : true,
-          debug : false
-        }))
-        .pipe(uglify({
-          mangle: false,
-          outSourceMap: true
-        }))
-        .pipe(header(IW.banner, { pkg: pkg}))
+  var b = browserify({
+    entries: IW._paths.main,
+    debug: true
+  });
+
+  return b.bundle()
+         .pipe(source('app.min.js'))
+         .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true, debug: true}))
+        // .pipe(uglify())
+        .pipe(header(IW.banner, { pkg: pkg }))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(IW._paths.demoJS));
 });
