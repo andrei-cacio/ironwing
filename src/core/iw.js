@@ -1,9 +1,11 @@
 'use strict';
 
 var utils = require('./utils');
+var clone = require('lodash/lang/clone');
+var uniqueId = require('lodash/utility/uniqueId');
 var original = {};
 
-function IW(type, id, attr) {  
+function IW(type, id, attr) {
   return this.init(type, id, attr);
 }
 
@@ -36,8 +38,9 @@ IW.prototype.init = function(type, id, attr) {
         });
       }
       else {
-        original = model;
-        self.attr = utils.toCamel(model);
+        self.__unique = uniqueId();
+        original[self.type + self.__unique] = model;
+        self.attr = utils.toCamel(clone(model, true));
       }
     }).onFail(function(){
       throw '\nGET HTTP request failed for the resource: [' + self.type +']. \n';
@@ -45,8 +48,9 @@ IW.prototype.init = function(type, id, attr) {
 
   }
   else {
-    original = attr;
-    this.attr = utils.toCamel(attr);
+    this.__unique = uniqueId();
+    original[this.type + this.__unique] = attr;
+    this.attr = utils.toCamel(clone(attr, true));
 
     if(!this.attr.id) {
       this.attr.id = id;
@@ -89,10 +93,12 @@ IW.useAdapter = function(adapterName, args) {
 // also syncs the same models
 IW.prototype.update = function (callback) {
   var self = this,
-      modelType    = this.type,
-      modelAdapter = this._adapter;
+      modelType = this.type,
+      modelAdapter = this._adapter,
+      originalObj = original[this.type + this.__unique],
+      syncedOriginal= {};
 
-  self.attr = utils.syncObjects(original, self.attr);
+  syncedOriginal = utils.syncObjects(originalObj, self.attr);
 
   IW.adapter.onDone(function(newAttr){
     instances.forEach(function(model){
@@ -105,7 +111,7 @@ IW.prototype.update = function (callback) {
   .onFail(function(){
     throw 'A problem has accoured while trying to update the [' + modelType + '] model';
   })
-  .ajax('put', this.address, false, self.attr);
+  .ajax('put', this.address, false, syncedOriginal);
 
   if ( callback ) {
     callback();
