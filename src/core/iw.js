@@ -1,17 +1,9 @@
-// constructors: IW(type)         -> Asks the API for the sepcific ResultSet (it can return an array or a single object) respecting the REST mapping
-//
-//               IW(type,id)      -> Asks the API for a specific model with the given ID (returns a single object)
-//
-//               IW(type,id,attr) -> Creates a model-view with the given attributes and ID that matches the back-end database ID
-//
-// the addapter attribute serves as the comunication link witht he API
-//
-// each ViewModel comes with implemeted CRUD methods which can accept a callback function for more flexibile use
-
 'use strict';
 
-var XHRJson = require('./adapters/XHRJson'),
-    camelCase = require('lodash/string/camelCase');
+var utils = require('./utils');
+var clone = require('lodash/lang/clone');
+var uniqueId = require('lodash/utility/uniqueId');
+var original = {};
 
 function IW(type, id, attr) {
   return this.init(type, id, attr);
@@ -46,7 +38,9 @@ IW.prototype.init = function(type, id, attr) {
         });
       }
       else {
-        self.attr = __toCamel(model);
+        self.__unique = uniqueId();
+        original[self.type + self.__unique] = model;
+        self.attr = utils.toCamel(clone(model, true));
       }
     }).onFail(function(){
       throw '\nGET HTTP request failed for the resource: [' + self.type +']. \n';
@@ -54,7 +48,9 @@ IW.prototype.init = function(type, id, attr) {
 
   }
   else {
-    this.attr = __toCamel(attr);
+    this.__unique = uniqueId();
+    original[this.type + this.__unique] = attr;
+    this.attr = utils.toCamel(clone(attr, true));
 
     if(!this.attr.id) {
       this.attr.id = id;
@@ -97,12 +93,17 @@ IW.useAdapter = function(adapterName, args) {
 // also syncs the same models
 IW.prototype.update = function (callback) {
   var self = this,
-      modelType    = this.type,
-      modelAdapter = this._adapter;
+      modelType = this.type,
+      modelAdapter = this._adapter,
+      originalObj = original[this.type + this.__unique],
+      syncedOriginal= {};
+
+  syncedOriginal = utils.syncObjects(originalObj, self.attr);
 
   IW.adapter.onDone(function(newAttr){
     instances.forEach(function(model){
       if (model.type === modelType && model._adapter === modelAdapter) {
+
         model.attr = newAttr;
       }
     });
@@ -110,7 +111,7 @@ IW.prototype.update = function (callback) {
   .onFail(function(){
     throw 'A problem has accoured while trying to update the [' + modelType + '] model';
   })
-  .ajax('put', this.address, false, self.attr);
+  .ajax('put', this.address, false, syncedOriginal);
 
   if ( callback ) {
     callback();
@@ -205,20 +206,6 @@ IW.prototype.update = function (callback) {
   });
 };
 
-function __toCamel(obj) {
-  var newObj = {},
-      key;
-
-  for (key in obj) {
-    if (typeof obj[key] === 'object') {
-      obj[key] = __toCamel(obj[key]);
-    }
-    newObj[camelCase(key)] = obj[key];
-  }
-
-  return newObj;
-}
-
 // Search by keys
 
 // IW.search = function(type, what){
@@ -229,14 +216,4 @@ function __toCamel(obj) {
 //     });
 // }
 
-/**
- * Inject the adapter to Mjs adapters
- */
-IW.adapters = IW.adapters || {};
-IW.adapters.JSON = new XHRJson();
-
 module.exports = IW;
-
-if (!!module) {
-  window.IW = IW;
-}
