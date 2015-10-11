@@ -1,5 +1,6 @@
 [![npm version](https://badge.fury.io/js/ironwing.svg)](http://badge.fury.io/js/ironwing)
 [![Bower version](https://badge.fury.io/bo/ironwing.svg)](http://badge.fury.io/bo/ironwing)
+[![Build Status](https://travis-ci.org/andrei-cacio/ironwing.svg?branch=master)](https://travis-ci.org/andrei-cacio/ironwing)
 
 # About
 
