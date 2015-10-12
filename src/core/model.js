@@ -125,7 +125,7 @@ Model.prototype.delete = function(callback) {
   }
 
   instances = instances.filter(function(model) {
-    return model.attr.id !== self.attr.id;
+    return model.attr.id !== self.attr.id && model.type === self.type;
   });
 
   this.attr = {};
@@ -154,7 +154,7 @@ Model.create = function(type, attr) {
 * Rertrieves a resource from the local cache
 * @param  {String} type The model's type
 * @param  {Number} id   The models'id
-* @return {M}
+* @return {Model}
 */
 Model.find = function(type, id) {
 
@@ -173,7 +173,7 @@ Model.find = function(type, id) {
 /**
 * Finds all resrources from the local cache
 * @param  {String} type The mode's type
-* @return {M}
+* @return {Model}
 */
 Model.findAll = function(type) {
 
