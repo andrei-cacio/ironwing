@@ -1,0 +1,256 @@
+[{
+  "id": "386",
+  "processed_cover": "E71D29D4-2A55-11E5-A150-F988926F2AA1.jpg",
+  "final_slug_yn": "1",
+  "categories": [
+    {
+      "id": "6",
+      "isChecked": 0,
+      "name": "Home Cinema",
+      "slug": "home-cinema"
+    },
+    {
+      "id": "32",
+      "name": "Uncategorized",
+      "isChecked": 0,
+      "slug": "uncategorized"
+    },
+    {
+      "slug": "andrei",
+      "name": "Andrei",
+      "isChecked": 0,
+      "id": "33"
+    },
+    {
+      "slug": "irod",
+      "id": "39",
+      "isChecked": 0,
+      "name": "irod"
+    },
+    {
+      "slug": "javascript",
+      "id": "84",
+      "isChecked": 1,
+      "name": "Javascript"
+    },
+    {
+      "id": "111",
+      "name": "AngualrJS",
+      "isChecked": 0,
+      "slug": "angualrjs"
+    },
+    {
+      "isChecked": 0,
+      "name": "AngularJS",
+      "id": "112",
+      "slug": "angularjs"
+    },
+    {
+      "name": "Linux",
+      "isChecked": 0,
+      "id": "113",
+      "slug": "linux"
+    }
+  ],
+  "blog": {
+    "domain": "andrei",
+    "onepager": {
+      "name": "Andrei Cacio",
+      "processed_cover": "49EF20DA-29CB-11E4-B7F5-8CF0FEF34E78.jpg",
+      "filter": "rgba(0, 0, 0, 0.53)",
+      "id": 1,
+      "logo": null,
+      "logo_label": null,
+      "set_description_first_time": "first",
+      "set_name_first_time": "first",
+      "set_cover_first_time": "default",
+      "cover": "49EF20DA-29CB-11E4-B7F5-8CF0FEF34E78.jpg",
+      "title_color": "rgb(255, 255, 255)",
+      "description": "Web Developer",
+      "title_position": "pos-bottom-right cover-bottom cover-center",
+      "blog_id": "192"
+    },
+    "user_blog": {
+      "user_id": "190",
+      "site_status": "active",
+      "id": "5",
+      "blog": {
+        "domain": "andrei",
+        "domain_change_count": "2"
+      },
+      "onepager": {
+        "processed_cover": "49EF20DA-29CB-11E4-B7F5-8CF0FEF34E78.jpg",
+        "name": "Andrei Cacio",
+        "description": "Web Developer"
+      },
+      "blog_id": "192",
+      "active_yn": "1"
+    }
+  },
+  "stripped_encoded_content": "&lt;p class=&quot;&quot;&gt;Lately I&#39;ve been working on my first open-source library. I didn&#39;t have the courage to spread the word but, to hell with that. Let me walk your through this little piece of cool javascript software which I hope you will like.&lt;\/p&gt;&lt;p class=&quot;&quot;&gt;&lt;a href=&quot;https:\/\/github.com\/andrei-cacio\/mjs&quot;&gt;Mjs&lt;\/a&gt; is a lightweight library for managing your rest mapping needs for model like representations of your data. &nbsp;What&#39;s cool about Mjs is that it can be easily integrated with other 3rd party libraries like AngularJS, BackboneJS, ReactJS etc.. &nbsp;and it&#39;s super easy to use. M-js is based on a few simple principles which applies to many of the new &lt;b&gt;SPA &lt;\/b&gt;applications which are build today.&nbsp;&lt;\/p&gt;&lt;p class=&quot;&quot;&gt;Some similar implementations of M-js are Restangular.&lt;\/p&gt;&lt;p class=&quot;&quot;&gt;To keep it sweet and simple, here&#39;s a short piece of code where you can connect to an API endpoint, let&#39;s say: &lt;i style=&quot;font-weight: bold;&quot;&gt;\/api\/books [GET] &lt;\/i&gt;&nbsp;and retrieve a list of books.&lt;\/p&gt;&lt;p class=&quot;&quot;&gt;Handlebars.js with Mjs&nbsp;&lt;\/p&gt;&lt;div class=&quot;medium-insert-images&quot;&gt;&lt;figure contenteditable=&quot;false&quot;&gt;\n    &lt;img src=&quot;https:\/\/d14qq66yymbykr.cloudfront.net\/public\/uploads\/covers\/thumb-532982C4-2A58-11E5-928A-A8B837E46C90.jpg&quot; alt=&quot;&quot;&gt;\n        \n&lt;\/figure&gt;&lt;\/div&gt;&lt;p class=&quot;&quot;&gt;HTML with Handlebars.js templating&lt;\/p&gt;&lt;div class=&quot;medium-insert-images&quot;&gt;&lt;figure contenteditable=&quot;false&quot;&gt;\n    &lt;img src=&quot;https:\/\/d14qq66yymbykr.cloudfront.net\/public\/uploads\/covers\/thumb-58EF0E9A-2A58-11E5-9975-FBC3493AE1F2.jpg&quot; alt=&quot;&quot;&gt;\n        \n&lt;\/figure&gt;&lt;\/div&gt;\n       \n       \n       \n       &lt;p&gt;&lt;br&gt;&lt;\/p&gt;",
+  "social_published": "0",
+  "user": {
+    "is_premium": "0",
+    "email": "andrei.cacio@evozon.com",
+    "status": "activated",
+    "links": {
+      "user_markets": [
+        {
+          "id": "16",
+          "name": "Technology"
+        }
+      ],
+      "user_theme": "",
+      "location": {
+        "city_id": "73629",
+        "city": "Baciu, Cluj",
+        "country_iso": "RO"
+      }
+    },
+    "site": "Andrei Cacio",
+    "last_name": "Cacio",
+    "avatar": "6C196CCE-2C78-11E4-A055-3EB0FEF34E78.jpg",
+    "id": "190",
+    "register_step": "2",
+    "username": "andrei",
+    "first_name": "Andrei"
+  },
+  "created_date": "2015-07-20 16:27:44",
+  "comments": [
+
+  ],
+  "status": "draft",
+  "title": "ironwingjs",
+  "encoded_title": "ironwingjs",
+  "content": "<p class=\"\">Lately I've been working on my first open-source library. I didn't have the courage to spread the word but, to hell with that. Let me walk your through this little piece of cool javascript software which I hope you will like.<\/p><p class=\"\"><a href=\"https:\/\/github.com\/andrei-cacio\/mjs\">Mjs<\/a> is a lightweight library for managing your rest mapping needs for model like representations of your data. &nbsp;What's cool about Mjs is that it can be easily integrated with other 3rd party libraries like AngularJS, BackboneJS, ReactJS etc.. &nbsp;and it's super easy to use. M-js is based on a few simple principles which applies to many of the new <b>SPA <\/b>applications which are build today.&nbsp;<\/p><p class=\"\">Some similar implementations of M-js are Restangular.<\/p><p class=\"\">To keep it sweet and simple, here's a short piece of code where you can connect to an API endpoint, let's say: <i style=\"font-weight: bold;\">\/api\/books [GET] <\/i>&nbsp;and retrieve a list of books.<\/p><p class=\"\">Handlebars.js with Mjs&nbsp;<\/p><div class=\"medium-insert-images\"><figure contenteditable=\"false\">\n    <img src=\"https:\/\/d14qq66yymbykr.cloudfront.net\/public\/uploads\/covers\/thumb-532982C4-2A58-11E5-928A-A8B837E46C90.jpg\" alt=\"\">\n        \n<\/figure><\/div><p class=\"\">HTML with Handlebars.js templating<\/p><div class=\"medium-insert-images\"><figure contenteditable=\"false\">\n    <img src=\"https:\/\/d14qq66yymbykr.cloudfront.net\/public\/uploads\/covers\/thumb-58EF0E9A-2A58-11E5-9975-FBC3493AE1F2.jpg\" alt=\"\">\n        \n<\/figure><\/div>\n       \n       \n       \n       <p><br><\/p>\n       \n       \n       \n       \n       \n       ",
+  "cover": "E71D29D4-2A55-11E5-A150-F988926F2AA1.jpg",
+  "slug": "ironwingjs"
+},
+{
+  "id": "387",
+  "processed_cover": "E71D29D4-2A55-11E5-A150-F988926F2AA1.jpg",
+  "final_slug_yn": "1",
+  "categories": [
+    {
+      "id": "6",
+      "isChecked": 0,
+      "name": "Home Cinema",
+      "slug": "home-cinema"
+    },
+    {
+      "id": "32",
+      "name": "Uncategorized",
+      "isChecked": 0,
+      "slug": "uncategorized"
+    },
+    {
+      "slug": "andrei",
+      "name": "Andrei",
+      "isChecked": 0,
+      "id": "33"
+    },
+    {
+      "slug": "irod",
+      "id": "39",
+      "isChecked": 0,
+      "name": "irod"
+    },
+    {
+      "slug": "javascript",
+      "id": "84",
+      "isChecked": 1,
+      "name": "Javascript"
+    },
+    {
+      "id": "111",
+      "name": "AngualrJS",
+      "isChecked": 0,
+      "slug": "angualrjs"
+    },
+    {
+      "isChecked": 0,
+      "name": "AngularJS",
+      "id": "112",
+      "slug": "angularjs"
+    },
+    {
+      "name": "Linux",
+      "isChecked": 0,
+      "id": "113",
+      "slug": "linux"
+    }
+  ],
+  "blog": {
+    "domain": "andrei",
+    "onepager": {
+      "name": "Andrei Cacio",
+      "processed_cover": "49EF20DA-29CB-11E4-B7F5-8CF0FEF34E78.jpg",
+      "filter": "rgba(0, 0, 0, 0.53)",
+      "id": 1,
+      "logo": null,
+      "logo_label": null,
+      "set_description_first_time": "first",
+      "set_name_first_time": "first",
+      "set_cover_first_time": "default",
+      "cover": "49EF20DA-29CB-11E4-B7F5-8CF0FEF34E78.jpg",
+      "title_color": "rgb(255, 255, 255)",
+      "description": "Web Developer",
+      "title_position": "pos-bottom-right cover-bottom cover-center",
+      "blog_id": "192"
+    },
+    "user_blog": {
+      "user_id": "190",
+      "site_status": "active",
+      "id": "5",
+      "blog": {
+        "domain": "andrei",
+        "domain_change_count": "2"
+      },
+      "onepager": {
+        "processed_cover": "49EF20DA-29CB-11E4-B7F5-8CF0FEF34E78.jpg",
+        "name": "Andrei Cacio",
+        "description": "Web Developer"
+      },
+      "blog_id": "192",
+      "active_yn": "1"
+    }
+  },
+  "stripped_encoded_content": "&lt;p class=&quot;&quot;&gt;Lately I&#39;ve been working on my first open-source library. I didn&#39;t have the courage to spread the word but, to hell with that. Let me walk your through this little piece of cool javascript software which I hope you will like.&lt;\/p&gt;&lt;p class=&quot;&quot;&gt;&lt;a href=&quot;https:\/\/github.com\/andrei-cacio\/mjs&quot;&gt;Mjs&lt;\/a&gt; is a lightweight library for managing your rest mapping needs for model like representations of your data. &nbsp;What&#39;s cool about Mjs is that it can be easily integrated with other 3rd party libraries like AngularJS, BackboneJS, ReactJS etc.. &nbsp;and it&#39;s super easy to use. M-js is based on a few simple principles which applies to many of the new &lt;b&gt;SPA &lt;\/b&gt;applications which are build today.&nbsp;&lt;\/p&gt;&lt;p class=&quot;&quot;&gt;Some similar implementations of M-js are Restangular.&lt;\/p&gt;&lt;p class=&quot;&quot;&gt;To keep it sweet and simple, here&#39;s a short piece of code where you can connect to an API endpoint, let&#39;s say: &lt;i style=&quot;font-weight: bold;&quot;&gt;\/api\/books [GET] &lt;\/i&gt;&nbsp;and retrieve a list of books.&lt;\/p&gt;&lt;p class=&quot;&quot;&gt;Handlebars.js with Mjs&nbsp;&lt;\/p&gt;&lt;div class=&quot;medium-insert-images&quot;&gt;&lt;figure contenteditable=&quot;false&quot;&gt;\n    &lt;img src=&quot;https:\/\/d14qq66yymbykr.cloudfront.net\/public\/uploads\/covers\/thumb-532982C4-2A58-11E5-928A-A8B837E46C90.jpg&quot; alt=&quot;&quot;&gt;\n        \n&lt;\/figure&gt;&lt;\/div&gt;&lt;p class=&quot;&quot;&gt;HTML with Handlebars.js templating&lt;\/p&gt;&lt;div class=&quot;medium-insert-images&quot;&gt;&lt;figure contenteditable=&quot;false&quot;&gt;\n    &lt;img src=&quot;https:\/\/d14qq66yymbykr.cloudfront.net\/public\/uploads\/covers\/thumb-58EF0E9A-2A58-11E5-9975-FBC3493AE1F2.jpg&quot; alt=&quot;&quot;&gt;\n        \n&lt;\/figure&gt;&lt;\/div&gt;\n       \n       \n       \n       &lt;p&gt;&lt;br&gt;&lt;\/p&gt;",
+  "social_published": "0",
+  "user": {
+    "is_premium": "0",
+    "email": "andrei.cacio@evozon.com",
+    "status": "activated",
+    "links": {
+      "user_markets": [
+        {
+          "id": "16",
+          "name": "Technology"
+        }
+      ],
+      "user_theme": "",
+      "location": {
+        "city_id": "73629",
+        "city": "Baciu, Cluj",
+        "country_iso": "RO"
+      }
+    },
+    "site": "Andrei Cacio",
+    "last_name": "Cacio",
+    "avatar": "6C196CCE-2C78-11E4-A055-3EB0FEF34E78.jpg",
+    "id": "190",
+    "register_step": "2",
+    "username": "andrei",
+    "first_name": "Andrei"
+  },
+  "created_date": "2015-07-20 16:27:44",
+  "comments": [
+
+  ],
+  "status": "draft",
+  "title": "javascript",
+  "encoded_title": "<javascript></javascript>",
+  "content": "<p class=\"\">Lately I've been working on my first open-source library. I didn't have the courage to spread the word but, to hell with that. Let me walk your through this little piece of cool javascript software which I hope you will like.<\/p><p class=\"\"><a href=\"https:\/\/github.com\/andrei-cacio\/mjs\">Mjs<\/a> is a lightweight library for managing your rest mapping needs for model like representations of your data. &nbsp;What's cool about Mjs is that it can be easily integrated with other 3rd party libraries like AngularJS, BackboneJS, ReactJS etc.. &nbsp;and it's super easy to use. M-js is based on a few simple principles which applies to many of the new <b>SPA <\/b>applications which are build today.&nbsp;<\/p><p class=\"\">Some similar implementations of M-js are Restangular.<\/p><p class=\"\">To keep it sweet and simple, here's a short piece of code where you can connect to an API endpoint, let's say: <i style=\"font-weight: bold;\">\/api\/books [GET] <\/i>&nbsp;and retrieve a list of books.<\/p><p class=\"\">Handlebars.js with Mjs&nbsp;<\/p><div class=\"medium-insert-images\"><figure contenteditable=\"false\">\n    <img src=\"https:\/\/d14qq66yymbykr.cloudfront.net\/public\/uploads\/covers\/thumb-532982C4-2A58-11E5-928A-A8B837E46C90.jpg\" alt=\"\">\n        \n<\/figure><\/div><p class=\"\">HTML with Handlebars.js templating<\/p><div class=\"medium-insert-images\"><figure contenteditable=\"false\">\n    <img src=\"https:\/\/d14qq66yymbykr.cloudfront.net\/public\/uploads\/covers\/thumb-58EF0E9A-2A58-11E5-9975-FBC3493AE1F2.jpg\" alt=\"\">\n        \n<\/figure><\/div>\n       \n       \n       \n       <p><br><\/p>\n       \n       \n       \n       \n       \n       ",
+  "cover": "E71D29D4-2A55-11E5-A150-F988926F2AA1.jpg",
+  "slug": "ironwingjs"
+}]
