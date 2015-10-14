@@ -124,6 +124,8 @@ Model.prototype.delete = function(callback) {
     callback();
   }
 
+  delete original[this.type + this.__unique];
+
   instances = instances.filter(function(model) {
     return model.attr.id !== self.attr.id && model.type === self.type;
   });
@@ -157,12 +159,10 @@ Model.create = function(type, attr) {
 * @return {Model}
 */
 Model.find = function(type, id) {
-
   var found;
 
   instances.forEach(function(model){
-
-    if (model.type === type && model.attr.id === id) {
+    if (model.type === type && parseInt(model.attr.id) === parseInt(id)) {
       found = model;
     }
   });
