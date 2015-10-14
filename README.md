@@ -60,7 +60,7 @@ IW.findAll('books');
 
 Creates a new model with the given attributes
 ```js
-IW.Create('books', { title: 'Some title', author: 'Some author });
+IW.Create('books', { title: 'Some title', author: 'Some author' });
 ```
 
 ### Installation
