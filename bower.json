@@ -1,23 +1,19 @@
 {
-  "name": "Mjs",
-  "version": "0.5.0",
-  "homepage": "https://github.com/andrei-cacio/mjs",
-  "description": "Mjs (M from Model from MVC) is a lightweight data layer for consuming a REST API",
-  "main": "dist/mjs.js",
-  "moduleType": [
-    "globals"
+  "name": "ironwingjs",
+  "version": "0.5.2",
+  "homepage": "https://github.com/andrei-cacio/ironwing",
+  "authors": [
+    "Andrei Cacio <andrei.cacio@yahoo.com>"
   ],
+  "description": "Ironwingjs is a lightweight front-end data library for model like data representations",
+  "main": "./dist/ironwing.min.js",
   "keywords": [
-    "Model",
+    "model",
     "MVC",
-    "Data",
-    "Data Layer",
-    "Persistence",
+    "\"data",
+    "layer\"",
     "REST",
     "CRUD"
-  ],
-  "authors": [
-    "Andrei Cacio"
   ],
   "license": "MIT",
   "ignore": [
