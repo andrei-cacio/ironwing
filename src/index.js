@@ -22,4 +22,6 @@ IW.adapters.JSON = new XHRJson();
 
 module.exports = IW;
 
-window.ironwing = IW;
+if (typeof window === 'object') {
+  window.ironwing = IW;
+}
