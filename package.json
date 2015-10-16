@@ -45,5 +45,8 @@
     "mocha": "^2.3.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "q": "^1.4.1"
   }
 }

@@ -1,6 +1,7 @@
 'use strict';
 
 var utils = require('./utils'),
+  Defer = require('q').defer,
   clone = require('lodash/lang/clone'),
   uniqueId = require('lodash/utility/uniqueId'),
   original = {};
@@ -12,6 +13,7 @@ var instances = [];
 // The Model main Class and constructor
 function Model(type, id, attr, adapter) {
   var models = [],
+    p = new Defer(),
     self = this;
 
   // Check if resource or collection
@@ -27,13 +29,15 @@ function Model(type, id, attr, adapter) {
     this.__adapter.onDone(function(model){
       if (model.length) {
         model.forEach(function (item) {
-          models.push( new Model(type, item.id, item) );
+          models.push( new Model(type, item.id, item, self.__adapter) );
         });
+        p.resolve(models);
       }
       else {
         self.__unique = uniqueId();
         original[self.type + self.__unique] = model;
         self.attr = utils.toCamel(clone(model, true));
+        p.resolve(self);
       }
     }).onFail(function(){
       throw '\nGET HTTP request failed for the resource: [' + self.type +']. \n';
@@ -51,18 +55,23 @@ function Model(type, id, attr, adapter) {
   }
 
   if (models.length) {
-    return models;
+    return p.promise;
   }
 
-  // If the construcotr is called to fetch a model that is already in the local memory
-  // then the local instance is refreshed with the model
-  var found = Model.find(this.type, this.attr.id );
-  if ( !found ) {
-    instances.push(this);
-  } else {
-    found.attr = this.attr;
+  if (!models.length) {
+    // If the construcotr is called to fetch a model that is already in the local memory
+    // then the local instance is refreshed with the model
+    var found = Model.find(this.type, this.attr.id );
+    if ( !found ) {
+      instances.push(this);
+    } else {
+      found.attr = this.attr;
+    }
   }
 
+  if (!attr) {
+    return p.promise;
+  }
 }
 
 // The update method, sends all attributes via API and if the request was a success it recieves them back
