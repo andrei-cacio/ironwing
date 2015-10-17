@@ -159,7 +159,7 @@ Model.create = function(type, attr) {
     throw 'A problem has accoured while trying to create a [' + this.type + '] model';
   }
 
-  return new this(type, newAttr.id, newAttr);
+  return new Model(type, newAttr.id, newAttr);
 };
 
 /**

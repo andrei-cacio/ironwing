@@ -1,5 +1,3 @@
-require('mocha-as-promised')();
-
 var assert = require('assert'),
   IW = require('../src/index');
 
