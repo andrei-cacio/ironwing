@@ -35,4 +35,12 @@ IW.findAll = function(type) {
   return Model.findAll(type);
 };
 
+IW.dump = function() {
+  Model.dump();
+};
+
+IW.__getNrOfCahcedModels = function() {
+  return Model.__getNrOfCahcedModels();
+};
+
 module.exports = IW;

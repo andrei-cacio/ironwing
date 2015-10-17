@@ -37,6 +37,7 @@ function Model(type, id, attr, adapter) {
         self.__unique = uniqueId();
         original[self.type + self.__unique] = model;
         self.attr = utils.toCamel(clone(model, true));
+
         p.resolve(self);
       }
     }).onFail(function(){
@@ -200,5 +201,14 @@ Model.findAll = function(type) {
 //         return model.attr[ Object.keys(what)[0] ] === what[ Object.keys(what)[0] ]
 //     });
 // }
+
+Model.dump = function() {
+  instances = [];
+  original = {};
+};
+
+Model.__getNrOfCahcedModels = function() {
+  return instances.length;
+};
 
 module.exports = Model;
