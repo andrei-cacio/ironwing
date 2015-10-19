@@ -1,6 +1,7 @@
 'use strict';
 
-var Model = require('./model');
+var Model = require('./model'),
+    storage = require('./storage');
 
 // The Model main Class and constructor
 function IW(type, id) {
@@ -27,20 +28,6 @@ IW.useAdapter = function(adapterName, args) {
   }
 };
 
-IW.find = function(type, id) {
-  return Model.find(type, id);
-};
-
-IW.findAll = function(type) {
-  return Model.findAll(type);
-};
-
-IW.dump = function() {
-  Model.dump();
-};
-
-IW.__getNrOfCahcedModels = function() {
-  return Model.__getNrOfCahcedModels();
-};
+IW.storage = storage;
 
 module.exports = IW;

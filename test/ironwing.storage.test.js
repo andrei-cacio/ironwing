@@ -7,8 +7,8 @@ describe('ironwing model', function() {
       IW.useAdapter('JSON', ['../../demo/api']);
 
       return IW('posts.json').then(function() {
-        var modelNr = IW.find('posts.json', 386);
-        var modelString = IW.find('posts.json', '386');
+        var modelNr = IW.storage.find('posts.json', 386);
+        var modelString = IW.storage.find('posts.json', '386');
 
         assert.equal(modelNr, modelString);
       });
@@ -19,10 +19,10 @@ describe('ironwing model', function() {
       IW.useAdapter('JSON', ['../../demo/api']);
 
       return IW('posts.json').then(function(fetchedPosts) {
-        var posts = IW.findAll('posts.json');
+        var posts = IW.storage.findAll('posts.json');
 
         assert.equal(posts.length, fetchedPosts.length);
-        assert.equal(IW.__getNrOfCahcedModels(), 2);
+        assert.equal(IW.storage.getSize(), 2);
       });
     });
 
@@ -30,10 +30,10 @@ describe('ironwing model', function() {
       IW.useAdapter('JSON', ['../../demo/api']);
 
       return IW('post.json').then(function(fetchedPost) {
-        var postFound = IW.find('post.json', 386);
+        var postFound = IW.storage.find('post.json', 386);
 
-        assert.equal(postFound, fetchedPost);
-        assert.equal(IW.__getNrOfCahcedModels(), 3);
+        assert.equal(JSON.stringify(postFound), JSON.stringify(fetchedPost));
+        assert.equal(IW.storage.getSize(), 3);
       });
     });
 
@@ -41,10 +41,10 @@ describe('ironwing model', function() {
        IW.useAdapter('JSON', ['../../demo/api']);
 
       return IW('post.json').then(function(fetchedPost) {
-        var postFound = IW.find('post.json', 386);
+        var postFound = IW.storage.find('post.json', 386);
 
-        assert.equal(postFound, fetchedPost);
-        assert.equal(IW.__getNrOfCahcedModels(), 3);
+        assert.equal(JSON.stringify(postFound), JSON.stringify(fetchedPost));
+        assert.equal(IW.storage.getSize(), 3);
       });
     });
   });

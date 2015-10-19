@@ -1,14 +1,10 @@
 'use strict';
 
 var utils = require('./utils'),
+  storage = require('./storage'),
   Defer = require('q').defer,
   clone = require('lodash/lang/clone'),
-  uniqueId = require('lodash/utility/uniqueId'),
   original = {};
-
-// Storing all instances to retrieve them using find
-// also used in syncing all models of the same type on update
-var instances = [];
 
 // The Model main Class and constructor
 function Model(type, id, attr, adapter) {
@@ -26,29 +22,44 @@ function Model(type, id, attr, adapter) {
   };
 
   if (!attr) {
+    /**
+     * GET request case
+     * Either fetching a collection
+     * Either fetching a resource
+     */
     this.__adapter.onDone(function(model){
       if (model.length) {
+        /**
+         * GET Collection case
+         */
         model.forEach(function (item) {
           models.push( new Model(type, item.id, item, self.__adapter) );
         });
         p.resolve(models);
       }
       else {
-        self.__unique = uniqueId();
-        original[self.type + self.__unique] = model;
+        /**
+         * GET Resource case
+         */
         self.attr = utils.toCamel(clone(model, true));
+        storage.store(self);
+        original[self.type + self.__unique] = model;
 
         p.resolve(self);
       }
     }).onFail(function(){
-      throw '\nGET HTTP request failed for the resource: [' + self.type +']. \n';
+      p.reject('GET HTTP request failed for the resource: [' + self.type +']');
     }).ajax('get', this.address, false);
 
   }
   else {
-    this.__unique = uniqueId();
-    original[this.type + this.__unique] = attr;
+    /**
+     * Create a new Model based on an given ATTR
+     * NO REQUEST here
+     */
     this.attr = utils.toCamel(clone(attr, true));
+    storage.store(this);
+    original[this.type + this.__unique] = attr;
 
     if(!this.attr.id) {
       this.attr.id = id;
@@ -59,16 +70,16 @@ function Model(type, id, attr, adapter) {
     return p.promise;
   }
 
-  if (!models.length) {
-    // If the construcotr is called to fetch a model that is already in the local memory
-    // then the local instance is refreshed with the model
-    var found = Model.find(this.type, this.attr.id );
-    if ( !found ) {
-      instances.push(this);
-    } else {
-      found.attr = this.attr;
-    }
-  }
+  // if (!models.length) {
+  //   // If the construcotr is called to fetch a model that is already in the local memory
+  //   // then the local instance is refreshed with the model
+  //   var found = Model.find(this.type, this.attr.id );
+  //   if ( !found ) {
+  //     instances.push(this);
+  //   } else {
+  //     found.attr = this.attr;
+  //   }
+  // }
 
   if (!attr) {
     return p.promise;
@@ -77,32 +88,23 @@ function Model(type, id, attr, adapter) {
 
 // The update method, sends all attributes via API and if the request was a success it recieves them back
 // also syncs the same models
-Model.prototype.update = function (callback) {
-  var modelType = this.type,
-
-  modelAdapter = this._adapter,
-  originalObj = original[this.type + this.__unique],
-  syncedOriginal= {};
+Model.prototype.update = function () {
+  var self = this,
+    defer = new Defer(),
+    originalObj = original[this.type + this.__unique],
+    syncedOriginal= {};
 
   syncedOriginal = utils.syncObjects(originalObj, this.attr);
 
-  this.__adapter.onDone(function(newAttr){
-    instances.forEach(function(model){
-      if (model.type === modelType && model._adapter === modelAdapter) {
-
-        model.attr = newAttr;
-      }
-    });
+  this.__adapter.onDone(function(){
+    defer.resolve();
   })
   .onFail(function(){
-    throw 'A problem has accoured while trying to update the [' + modelType + '] model';
+    defer.reject('A problem has accoured while trying to update the [' + self.type + '] model');
   })
   .ajax('put', this.address, false, syncedOriginal);
 
-  if ( callback ) {
-    callback();
-  }
-
+  return defer.promise;
 };
 
 /**
@@ -123,22 +125,13 @@ Model.prototype.get = function(callback) {
 
 /**
 * Delete a model
-* @param  {Function} callback [optional]
 */
-Model.prototype.delete = function(callback) {
-  var self = this;
-
+Model.prototype.delete = function() {
   this.__adapter('delete', this._getAPIWithoutSerializer(), false);
-
-  if (callback) {
-    callback();
-  }
 
   delete original[this.type + this.__unique];
 
-  instances = instances.filter(function(model) {
-    return model.attr.id !== self.attr.id && model.type === self.type;
-  });
+  storage.delete(this);
 
   this.attr = {};
 };
@@ -160,55 +153,6 @@ Model.create = function(type, attr) {
   }
 
   return new Model(type, newAttr.id, newAttr);
-};
-
-/**
-* Rertrieves a resource from the local cache
-* @param  {String} type The model's type
-* @param  {Number} id   The models'id
-* @return {Model}
-*/
-Model.find = function(type, id) {
-  var found;
-
-  instances.forEach(function(model){
-    if (model.type === type && parseInt(model.attr.id) === parseInt(id)) {
-      found = model;
-    }
-  });
-
-  return found;
-};
-
-/**
-* Finds all resrources from the local cache
-* @param  {String} type The mode's type
-* @return {Model}
-*/
-Model.findAll = function(type) {
-
-  return instances.filter(function(model){
-    return model.type === type;
-  });
-};
-
-// Search by keys
-
-// Model.search = function(type, what){
-//     var models = new Model(type);
-
-//     return models.filter(function(model){
-//         return model.attr[ Object.keys(what)[0] ] === what[ Object.keys(what)[0] ]
-//     });
-// }
-
-Model.dump = function() {
-  instances = [];
-  original = {};
-};
-
-Model.__getNrOfCahcedModels = function() {
-  return instances.length;
 };
 
 module.exports = Model;
