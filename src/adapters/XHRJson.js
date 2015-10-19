@@ -112,7 +112,14 @@ XHRJson.prototype.ajax = function(method, url, async, data) {
   }
   else {
     var response = require(this.apiUrl + url);
-    this.done.call(null, response);
+
+    if (method === 'POST') {
+      data.attr.id = 1000;
+      this.done.call(null, data.attr)
+    }
+    else {
+      this.done.call(null, response);
+    }
   }
 };
 

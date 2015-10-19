@@ -100,18 +100,23 @@ Model.prototype.update = function () {
 
 /**
 * Get a model
-* @param  {Function} callback [optional]
 */
-Model.prototype.get = function(callback) {
-  var self = this;
+Model.prototype.get = function() {
+  var self = this,
+      defer = new Defer();
 
   this.__adapter.onDone(function(attr){
-    self.attr = attr;
+    /**
+     * GET Resource case
+     */
+    self.attr = utils.toCamel(clone(attr, true));
+    storage.store(self);
+    original[self.type + self.__unique] = attr;
+
+    defer.resolve(self);
   }).ajax('get', this.address, false);
 
-  if (callback) {
-    callback();
-  }
+  return defer.promise;
 };
 
 /**
@@ -139,12 +144,11 @@ Model.prototype.delete = function() {
 * @param  {String} type The model type
 * @param  {Object} attr The model's attributes
 */
-Model.create = function(type, attr) {
-  var defer = new Defer(),
-    newAttr;
+Model.create = function(type, attr, __adapter) {
+  var defer = new Defer();
 
-  this.__adapter.onDone(function(){
-    defer.resolve(new Model(type, newAttr.id, newAttr));
+  __adapter.onDone(function(newAttr){
+    defer.resolve(new Model(type, newAttr.id, newAttr, __adapter));
   }).onFail(function() {
     defer.reject('A problem has accoured while trying to create a [' + this.type + '] model');
   }).ajax('post', type, false, { attr: attr });

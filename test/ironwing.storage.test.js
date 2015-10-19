@@ -37,7 +37,7 @@ describe('ironwing model', function() {
       });
     });
 
-    it('shoudl not be able to find a resource after it was deleted', function() {
+    it('should not be able to find a resource after it was deleted', function() {
        IW.useAdapter('JSON', ['../../demo/api']);
 
       return IW('post', 386).then(function(fetchedPost) {

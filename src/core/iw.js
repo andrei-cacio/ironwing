@@ -28,6 +28,10 @@ IW.useAdapter = function(adapterName, args) {
   }
 };
 
+IW.create = function(type, attr) {
+  return Model.create(type, attr, IW.adapter);
+};
+
 IW.storage = storage;
 
 module.exports = IW;
