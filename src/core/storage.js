@@ -55,7 +55,7 @@ Storage.findAll = function(type) {
 
 Storage.delete = function(item) {
   instances = instances.filter(function(model) {
-    return model.attr.id !== item.attr.id && model.type === item.type;
+    return (model.attr.id !== item.attr.id) ? true : (model.type !== item.type) ? true : false;
   });
 };
 

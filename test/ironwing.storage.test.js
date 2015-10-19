@@ -52,6 +52,7 @@ describe('ironwing model', function() {
 
         assert.notEqual(JSON.stringify(postFound), JSON.stringify(fetchedPost));
         assert.equal(!!postFound, false);
+        assert.equal(IW.storage.getSize(), 2);
       });
     });
   });

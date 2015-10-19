@@ -144,17 +144,16 @@ Model.prototype.delete = function() {
 * @param  {Object} attr The model's attributes
 */
 Model.create = function(type, attr) {
-  var newAttr;
+  var defer = new Defer(),
+    newAttr;
 
-  this.__adapter.onDone(function(attr){
-    newAttr = attr;
+  this.__adapter.onDone(function(){
+    defer.resolve(new Model(type, newAttr.id, newAttr));
+  }).onFail(function() {
+    defer.reject('A problem has accoured while trying to create a [' + this.type + '] model');
   }).ajax('post', type, false, { attr: attr });
 
-  if (!newAttr) {
-    throw 'A problem has accoured while trying to create a [' + this.type + '] model';
-  }
-
-  return new Model(type, newAttr.id, newAttr);
+  return defer.promise;
 };
 
 module.exports = Model;
