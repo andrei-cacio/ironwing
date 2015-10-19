@@ -17,10 +17,6 @@ function Model(type, id, attr, adapter) {
   this.type = type;
   this.__adapter = adapter;
 
-  this._getAPIWithoutSerializer = function() {
-    return this.__adapter.getAPIURL() + this.type + '/' + this.attr.id;
-  };
-
   if (!attr) {
     /**
      * GET request case
@@ -127,7 +123,7 @@ Model.prototype.delete = function() {
     defer.resolve();
   }).onFail(function(){
     defer.reject();
-  }).ajax('delete', this._getAPIWithoutSerializer(), false);
+  }).ajax('delete', this.address, false);
 
   delete original[this.type + this.__unique];
 
