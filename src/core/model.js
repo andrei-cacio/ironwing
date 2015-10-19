@@ -66,21 +66,16 @@ function Model(type, id, attr, adapter) {
     }
   }
 
+  /**
+   * return collection
+   */
   if (models.length) {
     return p.promise;
   }
 
-  // if (!models.length) {
-  //   // If the construcotr is called to fetch a model that is already in the local memory
-  //   // then the local instance is refreshed with the model
-  //   var found = Model.find(this.type, this.attr.id );
-  //   if ( !found ) {
-  //     instances.push(this);
-  //   } else {
-  //     found.attr = this.attr;
-  //   }
-  // }
-
+  /**
+   * return resource
+   */
   if (!attr) {
     return p.promise;
   }
@@ -127,13 +122,20 @@ Model.prototype.get = function(callback) {
 * Delete a model
 */
 Model.prototype.delete = function() {
-  this.__adapter('delete', this._getAPIWithoutSerializer(), false);
+  var defer = new Defer();
+  this.__adapter.onDone(function(){
+    defer.resolve();
+  }).onFail(function(){
+    defer.reject();
+  }).ajax('delete', this._getAPIWithoutSerializer(), false);
 
   delete original[this.type + this.__unique];
 
   storage.delete(this);
 
   this.attr = {};
+
+  return defer.promise;
 };
 
 /**

@@ -29,8 +29,8 @@ describe('ironwing model', function() {
     it('should be able to find a resource after it was fetched', function() {
       IW.useAdapter('JSON', ['../../demo/api']);
 
-      return IW('post.json').then(function(fetchedPost) {
-        var postFound = IW.storage.find('post.json', 386);
+      return IW('post', 386).then(function(fetchedPost) {
+        var postFound = IW.storage.find('post', 386);
 
         assert.equal(JSON.stringify(postFound), JSON.stringify(fetchedPost));
         assert.equal(IW.storage.getSize(), 3);
@@ -40,11 +40,18 @@ describe('ironwing model', function() {
     it('shoudl not be able to find a resource after it was deleted', function() {
        IW.useAdapter('JSON', ['../../demo/api']);
 
-      return IW('post.json').then(function(fetchedPost) {
-        var postFound = IW.storage.find('post.json', 386);
+      return IW('post', 386).then(function(fetchedPost) {
+        var postFound = IW.storage.find('post', 386);
 
         assert.equal(JSON.stringify(postFound), JSON.stringify(fetchedPost));
         assert.equal(IW.storage.getSize(), 3);
+
+        fetchedPost.delete();
+
+        postFound = IW.storage.find('post', 386);
+
+        assert.notEqual(JSON.stringify(postFound), JSON.stringify(fetchedPost));
+        assert.equal(!!postFound, false);
       });
     });
   });
