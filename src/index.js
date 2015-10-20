@@ -1,3 +1,4 @@
+'use strict';
 // constructors: IW(type)         -> Asks the API for the sepcific ResultSet (it can return an array or a single object) respecting the REST mapping
 //
 //               IW(type,id)      -> Asks the API for a specific model with the given ID (returns a single object)
@@ -8,7 +9,7 @@
 //
 // each ViewModel comes with implemeted CRUD methods which can accept a callback function for more flexibile use
 
-'use strict';
+
 
 var XHRJson = require('./adapters/XHRJson'),
     IW = require('./core/iw');
@@ -21,4 +22,6 @@ IW.adapters.JSON = new XHRJson();
 
 module.exports = IW;
 
-window.IW = IW;
+if (typeof window === 'object') {
+  window.ironwing = IW;
+}

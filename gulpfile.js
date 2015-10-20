@@ -41,7 +41,9 @@ gulp.task('build', ['lint'], function() {
   return b.bundle()
          .pipe(source('app.min.js'))
          .pipe(buffer())
-         .pipe(uglify())
+         .pipe(uglify({
+          mangle: false
+         }))
         .pipe(header(IW.banner, { pkg: pkg }))
         .pipe(rename('ironwing.min.js'))
         .pipe(gulp.dest('dist'));

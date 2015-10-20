@@ -6,7 +6,6 @@
 'use strict';
 
 function XHRJson() {
-  this.xhr = (typeof XMLHttpRequest === 'function') ? new XMLHttpRequest() : null;
   this.appUrl = null;
   this.done = null;
   this.fail = null;
@@ -37,26 +36,9 @@ function XHRJson() {
  * @param  {String} url The API URL
  */
  XHRJson.prototype.init = function(url) {
-  var self = this;
-
   this.apiUrl = checkURL(url);
   this.done = null;
   this.fail = null;
-
-  if (this.xhr) {
-    this.xhr.onreadystatechange = function(){
-      var responseObj;
-
-      if (self.xhr.readyState === 4 && self.xhr.status === 200 && typeof self.done === 'function') {
-        responseObj = JSON.parse(self.xhr.responseText);
-
-        self.done.call(null, responseObj);
-      }
-      else if (self.xhr.readyState === 4 && self.xhr.status === 404 && typeof self.fail === 'function') {
-        self.fail.call(null);
-      }
-    };
-  }
 };
 
 /**
@@ -99,27 +81,14 @@ function XHRJson() {
 XHRJson.prototype.ajax = function(method, url, async, data) {
   method = method.toUpperCase();
 
-  if (this.xhr) {
-    this.xhr.open(method, this.apiUrl + url, async);
+  var response = require(this.apiUrl + url);
 
-    if (method === 'POST' || method === 'PUT') {
-      this.xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-      this.xhr.send(JSON.stringify(data));
-    }
-    else {
-      this.xhr.send();
-    }
+  if (method === 'POST') {
+    data.attr.id = 1000;
+    this.done.call(null, data.attr);
   }
   else {
-    var response = require(this.apiUrl + url);
-
-    if (method === 'POST') {
-      data.attr.id = 1000;
-      this.done.call(null, data.attr);
-    }
-    else {
-      this.done.call(null, response);
-    }
+    this.done.call(null, response);
   }
 };
 
