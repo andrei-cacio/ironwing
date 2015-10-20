@@ -115,7 +115,7 @@ XHRJson.prototype.ajax = function(method, url, async, data) {
 
     if (method === 'POST') {
       data.attr.id = 1000;
-      this.done.call(null, data.attr)
+      this.done.call(null, data.attr);
     }
     else {
       this.done.call(null, response);
