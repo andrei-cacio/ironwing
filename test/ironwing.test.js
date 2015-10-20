@@ -1,39 +1,43 @@
 var assert = require('assert'),
   IW = require('../src/index'),
+  FakeXHR = require('../src/adapters/fakeXHRJson'),
   XHR = require('../src/adapters/XHRJson');
+
+IW.adapters.fakeJSON = new FakeXHR();
 
 describe('ironwing', function() {
   describe('#XHR adaptor', function(){
     it('should load JSON adapter by default', function() {
-      assert.equal(IW.adapters.hasOwnProperty('JSON'), true);
+      assert.equal(IW.adapters.hasOwnProperty('fakeJSON'), true);
       assert.equal(IW.adapters.JSON instanceof XHR, true);
+      assert.equal(IW.adapters.fakeJSON instanceof FakeXHR, true);
     });
     it('should be able to load an adapter', function() {
-      IW.useAdapter('JSON', ['api']);
+      IW.useAdapter('fakeJSON', ['api']);
 
-      assert.equal(IW.adapter instanceof XHR, true);
+      assert.equal(IW.adapter instanceof FakeXHR, true);
     });
     it('should be able to parse api addresses correctly', function() {
-       IW.useAdapter('JSON', ['api']);
+       IW.useAdapter('fakeJSON', ['api']);
 
        assert.equal(IW.adapter.apiUrl, '/api/');
 
-       IW.useAdapter('JSON', ['/api']);
+       IW.useAdapter('fakeJSON', ['/api']);
 
        assert.equal(IW.adapter.apiUrl, '/api/');
 
-       IW.useAdapter('JSON', ['api/']);
+       IW.useAdapter('fakeJSON', ['api/']);
 
        assert.equal(IW.adapter.apiUrl, '/api/');
 
-       IW.useAdapter('JSON', ['/api/']);
+       IW.useAdapter('fakeJSON', ['/api/']);
 
        assert.equal(IW.adapter.apiUrl, '/api/');
     });
   });
   describe('#factory method', function() {
     it('factory method returns array or promsie', function() {
-      IW.useAdapter('JSON', ['../../demo/api']);
+      IW.useAdapter('fakeJSON', ['../../demo/api']);
 
       var promisePosts = IW('posts.json'),
           promisePost = IW('post.json');
@@ -43,7 +47,7 @@ describe('ironwing', function() {
     });
 
     it('should return array for collection', function() {
-        IW.useAdapter('JSON', ['../../demo/api']);
+        IW.useAdapter('fakeJSON', ['../../demo/api']);
 
         var promisePosts = IW('posts.json');
 
@@ -54,7 +58,7 @@ describe('ironwing', function() {
     });
 
     it('should return object for resource', function() {
-      IW.useAdapter('JSON', ['../../demo/api']);
+      IW.useAdapter('fakeJSON', ['../../demo/api']);
 
       var promisePosts = IW('post.json');
 
@@ -155,9 +159,9 @@ describe('ironwing', function() {
     });
 
     it('should be able to support a full CRUD lifecycle', function() {
-      IW.useAdapter('JSON', ['../../demo/api']);
+      IW.useAdapter('fakeJSON', ['../../demo/api']);
 
-      var postPromise = IW.create('post.json', {
+      var postPromise = IW.create('post', {
         title: 'test',
         blog: {
           site_status: 'active',
@@ -190,7 +194,7 @@ describe('ironwing', function() {
       });
 
       return postPromise.then(function(postModel) {
-        var post = IW.storage.find('post.json', 1000);
+        var post = IW.storage.find('post', 1000);
 
         assert.equal(JSON.stringify(post), JSON.stringify(postModel));
 
@@ -203,7 +207,7 @@ describe('ironwing', function() {
 
         post.delete();
 
-        post = IW.storage.find('post.json', 1000);
+        post = IW.storage.find('post', 1000);
 
         assert.equal(!!post, false);
       });
