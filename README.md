@@ -4,64 +4,10 @@
 
 # About
 
-ironwing is a lightweight library for transforming your api outputs into model like pretty representations on which you can then do CRUD operations. It's similar to ORM like objects. Ironwing is great for your SPA application because you can integrate it with any framework or project. It makes JSON data management easy.
+In a few words, **ironwingjs** is a lightweight, framework-agnostic JavaScript library. **ironginwjs** is ment to be super easy to use and easy to integrate on any app. Out of the box it offers CRUD manipulation over a REST API interface.
 
 ### Version
-0.5.1
-
-### How it works
-ironwing uses an adapter to comunicate with your restful api. By default it comes with a builtin XHR json adapter.
-
-Here's a simple example:
-```js
-IW.useAdapter("JSON", ["/api/"]);
-
-var book = new IW("books", 1); // book is a model
-var books = new IW("books"); // books is a collection of book models
-
-// You can access the models attributes by the attr key
-book.attr.title = 'My new book title';
-
-// You can modify any attribute
-book.attr.author = 'John Doe';
-
-// After your are done editing, you can update it!
-// at this point a PUT request has been made and the DB is updated via the
-// REST API
-book.update();
-```
-### REST
-For the above example, suppose we have the book and books model and collection. For these we have the following actions with their urls:
-
-| Action            | Method | URL        | Returns    |
-| ----------------- | -------|------------|----------- |
-| new IW('books', 1) | GET    | /books/:id | Model      |
-| new IW('books')    | GET    | /books     | Collection |
-| book.update()     | PUT    | /boosk/:id | Model      |
-| IW.Create()        | POST   | /books     | Model      |
-| book.delete()     | DELETE | /books/:id | NULL       |
-
-
-### Methods
-Use a loaded adapter
-```js
-IW.useAdapter(adapterName, [,args]);
-```
-Search for the <i>book</i> model with the id <i>1</i>
-
-<i>Note:</i> This method only searches in the cache. If you fetched the book collection then all books are cached so you can access any of them whenever you want in your app.
-```js
-IW.find('books', 1);
-```
-Same as <i> find </i> but you search for a collection
-```js
-IW.findAll('books');
-```
-
-Creates a new model with the given attributes
-```js
-IW.Create('books', { title: 'Some title', author: 'Some author' });
-```
+0.7.0
 
 ### Installation
 
@@ -71,48 +17,72 @@ $ bower install ironwing
 $ npm install ironwing
 ```
 
-## Adapters
-Ironwing supports multiple adapters but only one can be used at a time (for now).
-When you include an adapter into your application, the adapter becomes available via the:
-```js
-IW.adapters
-```
-by default Ironwing comes with the <code> JSON </code> adapter which is described below.
-### JSON AJAX Adapter
-To intereact with your API via AJAX you ca use the JSON adapter. To use this adapter you simply call this method to let know Ironwing that you wish to use this adapter for all your CRUD operations:
-```js
-IW.useAdapter('JSON', ['/api']);
-```
-After this method is called you will have access to the adapter via this object:
-```js
-IW.adapter
-```
-This adapter is based on the XMLHTTPRequest object. You can call it a wrapper over XHR. It simply implements 3 methods (for now) for interacting with AJAX requests. This adapter can pe accessed via the:
-The methods offered are:
-```js
-IW.adapter.onDone( callbackFunction(response) );
-```
-```js
-IW.adapter.onFail( callbackFunction() );
-```
-```js
-IW.adapter.ajax(httpMethod, URL, async, data);
-```
-<i>Note:</i> The data parameter is optional and used only when sending POST or PUT requests
+### How it works
+___
+#### Adapters
 
-The callback setters (<code>onDone, onFail</code>) returns the adapter object so you can chain them like you do with <code> $.ajax</code> from jQuery.
+An adapter is an object which follows a predefined interface so that it can be integrated with ironwing. Out of the box, ironwingjs comes with a ***XHR JSON*** adapter which is an intermediate object that communicates with the `XMLHttpRequest` API. The developer doesn't interact directly with the adapter. The adapter is used *“under the hood”* by **ironwing**. The main purpose of adapters is to easily modify how **ironwing** interacts with the server. Anyone can write their own adapter and use it with ironwingjs. To load an adapter you simply call the `useAdapter` method first.
+Here's a simple example:
+```javascript
+var ironwing = require('ironwing');
+/**
+ * Load an adapter
+ * @param  {String} adapterName [The adapter's name (eg. JSON)]
+ * @param  {Array}  args        [An array of arguments]
+ */
+ironwing.useAdapter('JSON', ['/api']);
+```
+### Storage
 
-In the near future I would like to add a better error suport for the <code> onFail </code> setter and add more setters like:
-- <code> onComplete </code>
-- <code> onAlways </code>
-- <code> beforeSend </code>
-- etc.
+By default, **ironwing** has a local *(heap)* storage. After **ironwing** fetches a new model, by default it stores it locally for later use. So for example if we were to fetch data from an endpoint called ***/users/100***:
+```javascript
+ironwing('users', 100).then(function(user){ 
+    console.log(user.attr.name); 
+});
+```
+We can later on retrieve that model from memory without any extra trips to the server, by simply calling
+```javascript 
+var userModel =  ironwing.storage.find('users', 100);
+```
+Or, if we fetched a collection
+```javascript
+ironwing('users',).then(function(users){ console.log(users.length); });
+```
+we can later on get one or all users type model
+```javascript
+var usersCollection =  ironwing.storage.findAll('users');
+```
+For the moment, only the default storage can be used. In future releases we hope to implement a way to switch between storage implementations like an adapter for *local storage* so you can save the state of your models after refresh.
 
-### Todo's
+### Proxy objects
 
- - Offer more adapters
- - Mocking
- - Tests
+The constructor method ironwing() is basically a factory method which returns `Model` instances. Each model exposes CRUD methods for manipulating your data. However, **ironwing** never modifies the raw JSON data directly. It exposes a ***proxy object*** as an intermediate. Each model object has a `.attr` object which contains a camel cased transformation of the JSON response. Everything you edit on the *attr proxy object*, it will be later synced with the original raw response and sent to the back-end. This technique offers control over what gets edited and what doesn't. In future releases, with the help of the proxy object, some cool features can be added like validators on attributes.
+
+A quick create and update example:
+```javascript
+var ironwing = require('ironwing');
+var userData = {
+    first_name: 'Jon',
+    last_name: 'Doe';
+};
+
+ironwing.useAdapter('JSON', ['/api']);
+ironwing.create('users', userData).then(function(userModel) {
+    /**
+    * a POST request is sent to the server
+    * /api/users
+    */
+    userModel.attr.firstName = 'Jon';
+    userModel.attr.lastName = 'Doe';
+
+    userModel.update().then(function() {
+        /**
+        * a PUT request is sent to the server
+        * /api/users/:id
+        */
+    });
+});
+```
 
 License
 ----
