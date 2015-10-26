@@ -37,7 +37,7 @@ gulp.task('build', ['lint'], function() {
   var b = browserify({
     entries: IW._paths.main,
     debug: true
-  });
+  }).transform(babelify);
 
   return b.bundle()
          .pipe(source('app.min.js'))
