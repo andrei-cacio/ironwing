@@ -13,6 +13,7 @@ var gulp = require('gulp'),
     pkg = require('./package.json'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
+    babelify = require('babelify'),
     IW = {};
 
 IW.banner = [
@@ -53,7 +54,7 @@ gulp.task('scripts', ['lint'], function() {
   var b = browserify({
     entries: IW._paths.main,
     debug: true
-  });
+  }).transform(babelify);
 
   return b.bundle()
          .pipe(source('app.min.js'))

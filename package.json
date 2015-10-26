@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/andrei-cacio/ironwing",
   "devDependencies": {
+    "babelify": "^6.4.0",
     "browserify": "^11.2.0",
     "chai": "^3.3.0",
     "gulp": "^3.8.11",
@@ -44,7 +45,8 @@
     "lodash": "^3.10.1",
     "mocha": "^2.3.3",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.5.0"
   },
   "dependencies": {
     "q": "^1.4.1"

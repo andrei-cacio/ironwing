@@ -1,19 +1,19 @@
 'use strict';
 
-var camelCase = require('lodash/string/camelCase');
+import camelCase from 'lodash/string/camelCase';
 
 /**
  * Convert all object attrs to camelCase naming convetsion
  * @param  {Object} obj
  * @return {Object}
  */
-function __toCamel(obj) {
+export function toCamel(obj) {
   var newObj = {},
       key;
 
   for (key in obj) {
     if (typeof obj[key] === 'object') {
-      obj[key] = __toCamel(obj[key]);
+      obj[key] = toCamel(obj[key]);
     }
     newObj[camelCase(key)] = obj[key];
   }
@@ -27,12 +27,10 @@ function __toCamel(obj) {
  * @param  {[type]} camledObj [description]
  * @return {[type]}           [description]
  */
-function __syncObjects(obj, newObj) {
-  var key;
-
-  for (key in obj) {
+export function syncObjects(obj, newObj) {
+  for (let key in obj) {
     if (typeof obj[key] === 'object') {
-      obj[key] = __syncObjects(obj[key], newObj[camelCase(key)]);
+      obj[key] = syncObjects(obj[key], newObj[camelCase(key)]);
     }
     else {
       obj[key] = newObj[camelCase(key)];
@@ -41,9 +39,3 @@ function __syncObjects(obj, newObj) {
   }
   return obj;
 }
-
-
-module.exports = {
-    toCamel: __toCamel,
-    syncObjects: __syncObjects
-};

@@ -1,10 +1,10 @@
 'use strict';
 
-var Model = require('./model'),
-    storage = require('./storage');
+import Model from './model';
+import storage from './storage';
 
 // The Model main Class and constructor
-function IW(type, id) {
+export function IW(type, id) {
   if (IW.adapter === undefined) {
     throw 'No adapter found';
   }
@@ -33,5 +33,3 @@ IW.create = function(type, attr) {
 };
 
 IW.storage = storage;
-
-module.exports = IW;

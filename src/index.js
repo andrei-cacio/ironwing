@@ -10,9 +10,8 @@
 // each ViewModel comes with implemeted CRUD methods which can accept a callback function for more flexibile use
 
 
-
-var XHRJson = require('./adapters/XHRJson'),
-    IW = require('./core/iw');
+import XHRJson from './adapters/XHRJson';
+import IW from './core/iw';
 
 /**
  * Inject the adapter to IWjs adapters
@@ -20,7 +19,7 @@ var XHRJson = require('./adapters/XHRJson'),
 IW.adapters = IW.adapters || {};
 IW.adapters.JSON = new XHRJson();
 
-module.exports = IW;
+export default IW;
 
 if (typeof window === 'object') {
   window.ironwing = IW;

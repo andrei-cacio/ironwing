@@ -1,7 +1,8 @@
 'use strict';
 
-var getUniqueID = require('lodash/utility/uniqueId'),
-  instances = [],
+import getUniqueID from 'lodash/utility/uniqueId';
+
+var instances = [],
   Storage = {};
 
 Storage.store = function(item) {
@@ -17,7 +18,7 @@ Storage.store = function(item) {
 };
 
 Storage.update = function(model, newAttr) {
-  instances.forEach(function(item){
+  instances.forEach((item) => {
     if (item.type === model.type && item.__unique === model.__unique) {
       item.attr = newAttr;
     }
@@ -33,7 +34,7 @@ Storage.update = function(model, newAttr) {
 Storage.find = function(type, id) {
   var found;
 
-  instances.forEach(function(item){
+  instances.forEach((item) => {
     if (item.type === type && parseInt(item.attr.id) === parseInt(id)) {
       found = item;
     }
@@ -48,13 +49,13 @@ Storage.find = function(type, id) {
 * @return {Object}
 */
 Storage.findAll = function(type) {
-  return instances.filter(function(model){
+  return instances.filter((model) => {
     return model.type === type;
   });
 };
 
 Storage.delete = function(item) {
-  instances = instances.filter(function(model) {
+  instances = instances.filter((model) => {
     return (model.attr.id !== item.attr.id) ? true : (model.type !== item.type) ? true : false;
   });
 };
@@ -71,4 +72,4 @@ Storage.getSize = function() {
 //     });
 // }
 
-module.exports = Storage;
+export default Storage;
