@@ -1,10 +1,13 @@
 var assert = require('assert'),
+  FakeXHR = require('../src/adapters/fakeXHRJson'),
   IW = require('../src/index');
+
+IW.adapters.fakeJSON = new FakeXHR();
 
 describe('ironwing model', function() {
   describe('#fetching a collection', function() {
     it('should be able to find a model after it was fetched', function() {
-      IW.useAdapter('JSON', ['../../demo/api']);
+      IW.useAdapter('fakeJSON', ['../../demo/api']);
 
       return IW('posts.json').then(function() {
         var modelNr = IW.storage.find('posts.json', 386);
@@ -16,7 +19,7 @@ describe('ironwing model', function() {
     });
 
     it('should be able to find a collection after it was fetched', function() {
-      IW.useAdapter('JSON', ['../../demo/api']);
+      IW.useAdapter('fakeJSON', ['../../demo/api']);
 
       return IW('posts.json').then(function(fetchedPosts) {
         var posts = IW.storage.findAll('posts.json');
@@ -27,7 +30,7 @@ describe('ironwing model', function() {
     });
 
     it('should be able to find a resource after it was fetched', function() {
-      IW.useAdapter('JSON', ['../../demo/api']);
+      IW.useAdapter('fakeJSON', ['../../demo/api']);
 
       return IW('post', 386).then(function(fetchedPost) {
         var postFound = IW.storage.find('post', 386);
@@ -38,7 +41,7 @@ describe('ironwing model', function() {
     });
 
     it('should not be able to find a resource after it was deleted', function() {
-       IW.useAdapter('JSON', ['../../demo/api']);
+       IW.useAdapter('fakeJSON', ['../../demo/api']);
 
       return IW('post', 386).then(function(fetchedPost) {
         var postFound = IW.storage.find('post', 386);
