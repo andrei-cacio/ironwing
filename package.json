@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/andrei-cacio/ironwing",
   "devDependencies": {
+    "babel": "^5.8.29",
     "babelify": "^6.4.0",
     "browserify": "^11.2.0",
     "chai": "^3.3.0",
