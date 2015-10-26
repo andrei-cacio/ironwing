@@ -4,7 +4,7 @@ import Model from './model';
 import storage from './storage';
 
 // The Model main Class and constructor
-export function IW(type, id) {
+function IW(type, id) {
   if (IW.adapter === undefined) {
     throw 'No adapter found';
   }
@@ -33,3 +33,5 @@ IW.create = function(type, attr) {
 };
 
 IW.storage = storage;
+
+export default IW;

@@ -24,7 +24,7 @@ describe('JSON', function() {
                     actualCountry: 'Romania'
                 }
             };
-            syncedJSON = iwUtils.syncObjects(originalJson, camelCasedJson);
+            var syncedJSON = iwUtils.syncObjects(originalJson, camelCasedJson);
 
             assert.equal(syncedJSON.user_name, 'MihaiAndrei');
             assert.equal(syncedJSON.email_addr, 'mihai.andrei@irongwing');

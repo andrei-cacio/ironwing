@@ -4,7 +4,7 @@
   "description": "Ironwing is a lightweight front-end data library for model like data representations",
   "main": "dist/irowing.js",
   "scripts": {
-    "test": "mocha && gulp build",
+    "test": "mocha --compilers js:babel/register && gulp build",
     "start": "gulp"
   },
   "repository": {
