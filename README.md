@@ -6,9 +6,6 @@
 
 In a few words, **ironwingjs** is a lightweight, framework-agnostic JavaScript library. **ironginwjs** is ment to be super easy to use and easy to integrate on any app. Out of the box it offers CRUD manipulation over a REST API interface.
 
-### Version
-0.7.0
-
 ### Installation
 
 ```sh

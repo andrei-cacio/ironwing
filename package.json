@@ -1,6 +1,6 @@
 {
   "name": "ironwing",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Ironwing is a lightweight front-end data library for model like data representations",
   "main": "dist/irowing.js",
   "scripts": {
@@ -50,6 +50,7 @@
     "watchify": "^3.5.0"
   },
   "dependencies": {
+    "lodash": "^3.10.1",
     "q": "^1.4.1"
   }
 }
