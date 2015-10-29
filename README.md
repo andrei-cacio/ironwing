@@ -24,7 +24,7 @@ ___
 An adapter is an object which follows a predefined interface so that it can be integrated with ironwing. Out of the box, ironwingjs comes with a ***XHR JSON*** adapter which is an intermediate object that communicates with the `XMLHttpRequest` API. The developer doesn't interact directly with the adapter. The adapter is used *“under the hood”* by **ironwing**. The main purpose of adapters is to easily modify how **ironwing** interacts with the server. Anyone can write their own adapter and use it with ironwingjs. To load an adapter you simply call the `useAdapter` method first.
 Here's a simple example:
 ```javascript
-var ironwing = require('ironwing');
+import ironwing from './ironwing';
 /**
  * Load an adapter
  * @param  {String} adapterName [The adapter's name (eg. JSON)]
@@ -36,7 +36,7 @@ ironwing.useAdapter('JSON', ['/api']);
 
 By default, **ironwing** has a local *(heap)* storage. After **ironwing** fetches a new model, by default it stores it locally for later use. So for example if we were to fetch data from an endpoint called ***/users/100***:
 ```javascript
-ironwing('users', 100).then(function(user){ 
+ironwing('users', 100).then((user) => { 
     console.log(user.attr.name); 
 });
 ```
@@ -46,7 +46,9 @@ var userModel =  ironwing.storage.find('users', 100);
 ```
 Or, if we fetched a collection
 ```javascript
-ironwing('users',).then(function(users){ console.log(users.length); });
+ironwing('users',).then((users) => { 
+  console.log(users.length); 
+});
 ```
 we can later on get one or all users type model
 ```javascript
@@ -60,14 +62,15 @@ The constructor method ironwing() is basically a factory method which returns `M
 
 A quick create and update example:
 ```javascript
-var ironwing = require('ironwing');
+import ironwing from './ironwing';
+
 var userData = {
     first_name: 'Jon',
     last_name: 'Doe';
 };
 
 ironwing.useAdapter('JSON', ['/api']);
-ironwing.create('users', userData).then(function(userModel) {
+ironwing.create('users', userData).then((userModel) => {
     /**
     * a POST request is sent to the server
     * /api/users
@@ -75,7 +78,7 @@ ironwing.create('users', userData).then(function(userModel) {
     userModel.attr.firstName = 'Jon';
     userModel.attr.lastName = 'Doe';
 
-    userModel.update().then(function() {
+    userModel.update().then(() => {
         /**
         * a PUT request is sent to the server
         * /api/users/:id
