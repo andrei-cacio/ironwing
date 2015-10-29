@@ -1,6 +1,6 @@
 var assert = require('assert'),
   FakeXHR = require('../src/adapters/fakeXHRJson'),
-  IW = require('../src/index');
+  IW = require('../index');
 
 IW.adapters.fakeJSON = new FakeXHR();
 

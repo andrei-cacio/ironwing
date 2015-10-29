@@ -5,7 +5,7 @@
 
 'use strict';
 
-class XHRJson {
+export default class XHRJson {
   constructor() {
     this.xhr = (typeof XMLHttpRequest === 'function') ? new XMLHttpRequest() : null;
     this.appUrl = null;
@@ -120,5 +120,3 @@ function checkURL(string) {
 
   return string;
 }
-
-export default XHRJson;
