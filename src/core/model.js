@@ -1,143 +1,144 @@
 'use strict';
 
-var utils = require('./utils'),
-  storage = require('./storage'),
-  Defer = require('q').defer,
-  clone = require('lodash/lang/clone'),
-  original = {};
+import {toCamel, syncObjects} from './utils';
+import storage from './storage';
+import q from 'q';
+import clone from 'lodash/lang/clone';
 
-// The Model main Class and constructor
-function Model(type, id, attr, adapter) {
-  var models = [],
-    p = new Defer(),
-    self = this;
+const original = {};
+var Defer = q.defer;
 
-  // Check if resource or collection
-  this.address = (id) ? type + '/' + id : type;
-  this.type = type;
-  this.__adapter = adapter;
+export default class Model {
+  constructor(type, id, attr, adapter) {
+    var models = [],
+      p = new Defer(),
+      self = this;
 
-  if (!attr) {
-    /**
-     * GET request case
-     * Either fetching a collection
-     * Either fetching a resource
-     */
-    this.__adapter.onDone(function(model){
-      if (model.length) {
-        /**
-         * GET Collection case
-         */
-        model.forEach(function (item) {
-          models.push( new Model(type, item.id, item, self.__adapter) );
-        });
-        p.resolve(models);
+    // Check if resource or collection
+    this.address = (id) ? type + '/' + id : type;
+    this.type = type;
+    this.__adapter = adapter;
+
+    if (!attr) {
+      /**
+       * GET request case
+       * Either fetching a collection
+       * Either fetching a resource
+       */
+      this.__adapter.onDone((model) => {
+        if (model.length) {
+          /**
+           * GET Collection case
+           */
+          model.forEach((item) => {
+            models.push( new Model(type, item.id, item, self.__adapter) );
+          });
+          p.resolve(models);
+        }
+        else {
+          /**
+           * GET Resource case
+           */
+          self.attr = toCamel(clone(model, true));
+          storage.store(self);
+          original[self.type + self.__unique] = model;
+
+          p.resolve(self);
+        }
+      }).onFail(() => {
+        p.reject('GET HTTP request failed for the resource: [' + self.type +']');
+      }).ajax('get', this.address, false);
+
+    }
+    else {
+      /**
+       * Create a new Model based on an given ATTR
+       * NO REQUEST here
+       */
+      this.attr = toCamel(clone(attr, true));
+      storage.store(this);
+      original[this.type + this.__unique] = attr;
+
+      if(!this.attr.id) {
+        this.attr.id = id;
       }
-      else {
-        /**
-         * GET Resource case
-         */
-        self.attr = utils.toCamel(clone(model, true));
-        storage.store(self);
-        original[self.type + self.__unique] = model;
+    }
 
-        p.resolve(self);
-      }
-    }).onFail(function(){
-      p.reject('GET HTTP request failed for the resource: [' + self.type +']');
-    }).ajax('get', this.address, false);
-
-  }
-  else {
     /**
-     * Create a new Model based on an given ATTR
-     * NO REQUEST here
+     * return collection
      */
-    this.attr = utils.toCamel(clone(attr, true));
-    storage.store(this);
-    original[this.type + this.__unique] = attr;
+    if (models.length) {
+      return p.promise;
+    }
 
-    if(!this.attr.id) {
-      this.attr.id = id;
+    /**
+     * return resource
+     */
+    if (!attr) {
+      return p.promise;
     }
   }
 
   /**
-   * return collection
+   * The update method, sends all attributes via API and if the request was a success it recieves them back
+   * also syncs the same models
+   * @return {Promise}
    */
-  if (models.length) {
-    return p.promise;
+  update() {
+    var self = this,
+      defer = new Defer(),
+      originalObj = original[this.type + this.__unique],
+      syncedOriginal= {};
+
+    syncedOriginal = syncObjects(originalObj, this.attr);
+
+    this.__adapter.onDone(() => {
+      defer.resolve();
+    })
+    .onFail(() => {
+      defer.reject('A problem has accoured while trying to update the [' + self.type + '] model');
+    })
+    .ajax('put', this.address, false, syncedOriginal);
+
+    return defer.promise;
   }
 
-  /**
-   * return resource
-   */
-  if (!attr) {
-    return p.promise;
+  get() {
+    var self = this,
+        defer = new Defer();
+
+    this.__adapter.onDone((attr) => {
+      /**
+       * GET Resource case
+       */
+      self.attr = toCamel(clone(attr, true));
+      storage.store(self);
+      original[self.type + self.__unique] = attr;
+
+      defer.resolve(self);
+    }).ajax('get', this.address, false);
+
+    return defer.promise;
+  }
+
+  delete() {
+    var defer = new Defer();
+
+    this.__adapter.onDone(() => {
+      defer.resolve();
+    }).onFail(() => {
+      defer.reject();
+    }).ajax('delete', this.address, false);
+
+    delete original[this.type + this.__unique];
+
+    storage.delete(this);
+
+    this.attr = {};
+
+    return defer.promise;
   }
 }
-
-// The update method, sends all attributes via API and if the request was a success it recieves them back
-// also syncs the same models
-Model.prototype.update = function () {
-  var self = this,
-    defer = new Defer(),
-    originalObj = original[this.type + this.__unique],
-    syncedOriginal= {};
-
-  syncedOriginal = utils.syncObjects(originalObj, this.attr);
-
-  this.__adapter.onDone(function(){
-    defer.resolve();
-  })
-  .onFail(function(){
-    defer.reject('A problem has accoured while trying to update the [' + self.type + '] model');
-  })
-  .ajax('put', this.address, false, syncedOriginal);
-
-  return defer.promise;
-};
-
-/**
-* Get a model
-*/
-Model.prototype.get = function() {
-  var self = this,
-      defer = new Defer();
-
-  this.__adapter.onDone(function(attr){
-    /**
-     * GET Resource case
-     */
-    self.attr = utils.toCamel(clone(attr, true));
-    storage.store(self);
-    original[self.type + self.__unique] = attr;
-
-    defer.resolve(self);
-  }).ajax('get', this.address, false);
-
-  return defer.promise;
-};
-
-/**
-* Delete a model
-*/
-Model.prototype.delete = function() {
-  var defer = new Defer();
-  this.__adapter.onDone(function(){
-    defer.resolve();
-  }).onFail(function(){
-    defer.reject();
-  }).ajax('delete', this.address, false);
-
-  delete original[this.type + this.__unique];
-
-  storage.delete(this);
-
-  this.attr = {};
-
-  return defer.promise;
-};
 
 /**
 * Creates a new model of the type given with the specified attr, if the attr aren't matched the model will not be created
@@ -147,13 +148,11 @@ Model.prototype.delete = function() {
 Model.create = function(type, attr, __adapter) {
   var defer = new Defer();
 
-  __adapter.onDone(function(newAttr){
+  __adapter.onDone((newAttr) => {
     defer.resolve(new Model(type, newAttr.id, newAttr, __adapter));
-  }).onFail(function() {
+  }).onFail(() => {
     defer.reject('A problem has accoured while trying to create a [' + this.type + '] model');
   }).ajax('post', type, false, { attr: attr });
 
   return defer.promise;
 };
-
-module.exports = Model;

@@ -8,10 +8,9 @@ import camelCase from 'lodash/string/camelCase';
  * @return {Object}
  */
 export function toCamel(obj) {
-  var newObj = {},
-      key;
+  var newObj = {};
 
-  for (key in obj) {
+  for (let key in obj) {
     if (typeof obj[key] === 'object') {
       obj[key] = toCamel(obj[key]);
     }
@@ -37,5 +36,6 @@ export function syncObjects(obj, newObj) {
 
     }
   }
+
   return obj;
 }

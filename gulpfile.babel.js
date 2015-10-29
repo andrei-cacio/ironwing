@@ -1,7 +1,6 @@
 'use strict';
 
-import jshintStlylish from 'jshint-stylish';
-
+import 'jshint-stylish';
 import gulp from 'gulp';
 import uglify from 'gulp-uglify';
 import sourcemaps from 'gulp-sourcemaps';

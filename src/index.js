@@ -19,8 +19,4 @@ import IW from './core/iw';
 IW.adapters = IW.adapters || {};
 IW.adapters.JSON = new XHRJson();
 
-export default IW;
-
-if (typeof window === 'object') {
-  window.ironwing = IW;
-}
+window.ironwing = IW;
