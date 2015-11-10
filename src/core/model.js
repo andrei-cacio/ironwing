@@ -152,7 +152,7 @@ Model.create = function(type, attr, __adapter) {
     defer.resolve(new Model(type, newAttr.id, newAttr, __adapter));
   }).onFail(() => {
     defer.reject('A problem has accoured while trying to create a [' + this.type + '] model');
-  }).ajax('post', type, false, { attr: attr });
+  }).ajax('post', type, false, attr);
 
   return defer.promise;
 };
