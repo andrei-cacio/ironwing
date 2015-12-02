@@ -92,8 +92,12 @@ export default class Model {
 
     syncedOriginal = syncObjects(originalObj, this.attr);
 
-    this.__adapter.onDone(() => {
-      defer.resolve();
+    this.__adapter.onDone((attr) => {
+      self.attr = toCamel(clone(attr, true));
+      storage.store(self);
+      original[self.type + self.__unique] = attr;
+
+      defer.resolve(self);
     })
     .onFail(() => {
       defer.reject('A problem has accoured while trying to update the [' + self.type + '] model');

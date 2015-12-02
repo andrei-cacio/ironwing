@@ -104,6 +104,15 @@ describe('ironwing', function() {
       });
     });
 
+    it('should be able to update the model after UPDATE', function() {
+      var post = IW.storage.find('post.json', 386);
+
+      post.attr.title = 'Bla bla';
+      return post.update().then(function(dbPost) {
+        assert.equal(post.attr.title, dbPost.attr.title);
+      });
+    });
+
     it('should be able to delete a model', function() {
       var promisePosts = IW('post.json');
 
