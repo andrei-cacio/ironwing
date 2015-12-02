@@ -5,6 +5,8 @@
 
 'use strict';
 
+import clone from 'lodash/lang/clone';
+
 function XHRJson() {
   this.appUrl = null;
   this.done = null;
@@ -81,11 +83,15 @@ function XHRJson() {
 XHRJson.prototype.ajax = function(method, url, async, data) {
   method = method.toUpperCase();
 
-  var response = require(this.apiUrl + url);
+  var response = clone(require(this.apiUrl + url), true);
 
   if (method === 'POST') {
     data.id = 1000;
     this.done.call(null, data);
+  }
+  if (method === 'PUT') {
+    response.title = data.title;
+    this.done.call(null, response);
   }
   else {
     this.done.call(null, response);
