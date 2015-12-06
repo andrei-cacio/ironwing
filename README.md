@@ -19,9 +19,10 @@ $ npm install ironwing
 Ironwing was ment to be simple. So let's say we have the `/api/users` endpoint and we want to manipulate the data that's coming from that API.
 
 ```javascript
+// Tell ironwing to interact with the /api base path for all operations
 ironwing.useAdapter('JSON', ['/api']);
 
-// Fetch a collection
+// Fetch a collection and make a GET hit on /api/users
 ironwing('users').then((users) => {
   // do something with users collection
 });
@@ -44,7 +45,6 @@ ironwing('users', 100).then((user) => {
 });
 ```
 
-___
 #### REST
 Here is a map of the endpoints *ironwing* will hit on every operation
 
@@ -55,6 +55,10 @@ Here is a map of the endpoints *ironwing* will hit on every operation
 | user.update()     | PUT    | /users/:id | Model      |
 | ironwing.create()        | POST   | /users     | Model      |
 | user.delete()     | DELETE | /users/:id | NULL       |
+
+### Core concepts
+___
+
 #### Adapters
 
 An adapter is an object which follows a predefined interface so that it can be integrated with ironwing. Out of the box, ironwingjs comes with a ***XHR JSON*** adapter which is an intermediate object that communicates with the `XMLHttpRequest` API. The developer doesn't interact directly with the adapter. The adapter is used *“under the hood”* by **ironwing**. The main purpose of adapters is to easily modify how **ironwing** interacts with the server. Anyone can write their own adapter and use it with ironwingjs. To load an adapter you simply call the `useAdapter` method first.
