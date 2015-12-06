@@ -15,6 +15,35 @@ $ npm install ironwing
 ```
 
 ### How it works
+
+Ironwing was ment to be simple. So let's say we have the `/api/users` endpoint and we want to manipulate the data that's coming from that API.
+
+```javascript
+ironwing.useAdapter('JSON', ['/api']);
+
+// Fetch a collection
+ironwing('users').then((users) => {
+  // do something with users collection
+});
+
+// Fetch a single resource
+ironwing('users', 100).then((user) => {
+  // do something with the fetched user resource
+});
+
+// Update a resource
+ironwing('users', 100).then((user) => {
+  // access the resource attributes via the .attr object
+  user.attr.name = 'Carl';
+  user.update();
+});
+
+// Delete a resource
+ironwing('users', 100).then((user) => {
+  user.delete();
+});
+```
+
 ___
 #### REST
 Here is a map of the endpoints *ironwing* will hit on every operation
