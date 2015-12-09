@@ -127,7 +127,9 @@ ironwing.create('users', userData).then((userModel) => {
 });
 ```
 
-### ironwingjs in [Today Software Magazine](http://www.todaysoftmag.com)
+---
+
+# ironwingjs in [Today Software Magazine](http://www.todaysoftmag.com)
 
 [Introducing Ironwingjs](http://www.todaysoftmag.com/article/1703/introducing-ironwingjs)
 
