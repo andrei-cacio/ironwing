@@ -22,3 +22,5 @@ IW.adapters.JSON = new XHRJson();
 if (typeof window === 'object') {
   window.ironwing = IW;
 }
+
+export default IW;

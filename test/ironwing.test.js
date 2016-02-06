@@ -1,5 +1,5 @@
 var assert = require('assert'),
-  IW = require('../index'),
+  IW = require('../src/index'),
   FakeXHR = require('../src/adapters/fakeXHRJson'),
   XHR = require('../src/adapters/XHRJson');
 
