@@ -11,6 +11,7 @@
 
 
 import XHRJson from './adapters/XHRJson';
+import RequestJSON from './adapters/requestJson';
 import IW from './core/iw';
 
 /**
@@ -18,6 +19,7 @@ import IW from './core/iw';
  */
 IW.adapters = IW.adapters || {};
 IW.adapters.JSON = new XHRJson();
+IW.adapters.RequestJSON = new RequestJSON();
 
 if (typeof window === 'object') {
   window.ironwing = IW;
