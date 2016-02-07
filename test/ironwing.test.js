@@ -9,7 +9,7 @@ describe('ironwing', function() {
   describe('#XHR adaptor', function(){
     it('should load JSON adapter by default', function() {
       assert.equal(IW.adapters.hasOwnProperty('fakeJSON'), true);
-      assert.equal(IW.adapters.JSON instanceof XHR, true);
+      assert.equal(IW.adapters.XHRJson instanceof XHR, true);
       assert.equal(IW.adapters.fakeJSON instanceof FakeXHR, true);
     });
     it('should be able to load an adapter', function() {
