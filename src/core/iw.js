@@ -3,17 +3,27 @@
 import Model from './model';
 import storage from './storage';
 
-// The Model main Class and constructor
 function IW(type, id) {
-  if (IW.adapter === undefined) {
-    throw 'No adapter found';
+  if (!IW.adapter) {
+    loadAdapter();
   }
 
   return new Model(type, id, null, IW.adapter);
 }
 
+function loadAdapter() {
+  const basePath = [IW.base || '/'];
+
+  if (typeof window !== 'undefined') {
+    IW.useAdapter('XHRJson', basePath);
+  }
+  else if (typeof process !== 'undefined') {
+    IW.useAdapter('RequestJSON', basePath);
+  }
+}
+
 /**
- * Instantiate an adapter so Mjs will use it
+ * Instantiate an adapter so ironwing will use it
  * @param  {String} adapterName The adapter's name (eg. JSON)
  * @param  {Array}  args        An array of arguments
  */

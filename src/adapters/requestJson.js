@@ -10,6 +10,10 @@ export default class RequestJSON {
     this.fail = null;
   }
 
+  setUrl(url) {
+    this.apiUrl = checkURL(url);
+  }
+
   /**
    * Constructor
    * @param  {String} url The API URL

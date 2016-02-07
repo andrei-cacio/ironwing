@@ -18,7 +18,7 @@ import IW from './core/iw';
  * Inject the adapter to IWjs adapters
  */
 IW.adapters = IW.adapters || {};
-IW.adapters.JSON = new XHRJson();
+IW.adapters.XHRJson = new XHRJson();
 IW.adapters.RequestJSON = new RequestJSON();
 
 if (typeof window === 'object') {
