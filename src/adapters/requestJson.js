@@ -28,7 +28,6 @@ export default class RequestJSON {
           'User-Agent': 'ironwing'
         }
     };
-    console.log('fetching from ' + options.url);
     request(options, (err, res, body) => {
       if (err || !body) {
         this.fail.call();
