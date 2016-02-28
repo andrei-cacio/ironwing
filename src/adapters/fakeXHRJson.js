@@ -6,31 +6,12 @@
 'use strict';
 
 import clone from 'lodash/lang/clone';
+import {checkURL} from '../core/utils';
 
 function XHRJson() {
   this.appUrl = null;
   this.done = null;
   this.fail = null;
-}
-
-/**
- * Check if an URL starts and ends with /
- * @param  {String} string URL
- * @return {String} The fixed URL string
- */
- function checkURL(string) {
-  if (typeof string !== 'string') {
-    return '/';
-  }
-
-  if (string[string.length - 1] !== '/') {
-    string += '/';
-  }
-  if (string[0] !== '/' && string[0] !== '.') {
-    string = '/' + string;
-  }
-
-  return string;
 }
 
 /**
