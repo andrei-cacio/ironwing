@@ -45,6 +45,7 @@
     "gulp-uglifyjs": "^0.6.2",
     "gulp-webserver": "^0.9.1",
     "jshint-stylish": "^1.0.1",
+    "json-server": "^0.8.8",
     "lodash": "^3.10.1",
     "mocha": "^2.3.3",
     "vinyl-buffer": "^1.0.0",
