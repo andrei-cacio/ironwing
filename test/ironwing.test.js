@@ -1,7 +1,8 @@
 var assert = require('assert'),
-  IW = require('../index'),
+  IW = require('../src/index'),
   FakeXHR = require('../src/adapters/fakeXHRJson'),
-  XHR = require('../src/adapters/XHRJson');
+  XHR = require('../src/adapters/XHRJson'),
+  RequestJSON = require('../src/adapters/requestJson');
 
 IW.adapters.fakeJSON = new FakeXHR();
 
@@ -9,8 +10,9 @@ describe('ironwing', function() {
   describe('#XHR adaptor', function(){
     it('should load JSON adapter by default', function() {
       assert.equal(IW.adapters.hasOwnProperty('fakeJSON'), true);
-      assert.equal(IW.adapters.JSON instanceof XHR, true);
+      assert.equal(IW.adapters.XHRJson instanceof XHR, true);
       assert.equal(IW.adapters.fakeJSON instanceof FakeXHR, true);
+      assert.equal(IW.adapters.RequestJSON instanceof RequestJSON, true);
     });
     it('should be able to load an adapter', function() {
       IW.useAdapter('fakeJSON', ['api']);
@@ -33,6 +35,10 @@ describe('ironwing', function() {
        IW.useAdapter('fakeJSON', ['/api/']);
 
        assert.equal(IW.adapter.apiUrl, '/api/');
+
+       IW.useAdapter('fakeJSON', ['http://jsonplaceholder.typicode.com']);
+
+       assert.equal(IW.adapter.apiUrl, 'http://jsonplaceholder.typicode.com/');
     });
   });
   describe('#factory method', function() {

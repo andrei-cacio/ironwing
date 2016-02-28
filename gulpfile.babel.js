@@ -33,23 +33,6 @@ IW._paths = {
 };
 IW.minifiedName = 'ironwing.min.js';
 
-gulp.task('build', ['lint'], () => {
-  var b = browserify({
-    entries: IW._paths.main,
-    debug: true
-  }).transform(babelify);
-
-  return b.bundle()
-         .pipe(source('app.min.js'))
-         .pipe(buffer())
-         .pipe(uglify({
-          mangle: false
-         }))
-        .pipe(header(IW.banner, { pkg: pkg }))
-        .pipe(rename('ironwing.min.js'))
-        .pipe(gulp.dest('dist'));
-});
-
 gulp.task('scripts', ['lint'], () => {
   var b = browserify({
     entries: IW._paths.main,

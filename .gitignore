@@ -2,5 +2,8 @@
 *.cache
 *.sublime-project
 *.sublime-workspace
+demo/js/**/*.js
+demo/js/**/*.map
 node_modules
 npm-debug.log
+dist

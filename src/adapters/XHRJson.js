@@ -5,12 +5,18 @@
 
 'use strict';
 
+import {checkURL} from '../core/utils';
+
 export default class XHRJson {
   constructor() {
     this.xhr = (typeof XMLHttpRequest === 'function') ? new XMLHttpRequest() : null;
     this.appUrl = null;
     this.done = null;
     this.fail = null;
+  }
+
+  setUrl(url) {
+    this.apiUrl = checkURL(url);
   }
 
   /**
@@ -99,24 +105,4 @@ export default class XHRJson {
 
     return this;
   }
-}
-
-/**
-* Check if an URL starts and ends with /
-* @param  {String} string URL
-* @return {String} The fixed URL string
-*/
-function checkURL(string) {
-  if (typeof string !== 'string') {
-    return '/';
-  }
-
-  if (string[string.length - 1] !== '/') {
-    string += '/';
-  }
-  if (string[0] !== '/' && string[0] !== '.') {
-    string = '/' + string;
-  }
-
-  return string;
 }

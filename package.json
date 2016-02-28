@@ -2,9 +2,10 @@
   "name": "ironwing",
   "version": "0.7.4",
   "description": "Ironwing is a lightweight front-end data library for model like data representations",
-  "main": "dist/irowing.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel/register && gulp build",
+    "test": "mocha --compilers js:babel/register && gulp lint",
+    "build": "babel src --presets babel-preset-es2015 --out-dir dist",
     "start": "gulp"
   },
   "repository": {
@@ -44,6 +45,7 @@
     "gulp-uglifyjs": "^0.6.2",
     "gulp-webserver": "^0.9.1",
     "jshint-stylish": "^1.0.1",
+    "json-server": "^0.8.8",
     "lodash": "^3.10.1",
     "mocha": "^2.3.3",
     "vinyl-buffer": "^1.0.0",
@@ -52,6 +54,7 @@
   },
   "dependencies": {
     "lodash": "^3.10.1",
-    "q": "^1.4.1"
+    "q": "^1.4.1",
+    "request": "^2.69.0"
   }
 }
