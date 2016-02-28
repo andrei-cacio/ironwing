@@ -1,115 +1,185 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <title>ironwingjs by andrei-cacio</title>
 
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <title>ironwingjs by andrei-cacio</title>
   </head>
-
   <body>
-    <header>
-      <div class="inner">
+    <div class="wrapper">
+      <header>
         <h1>ironwingjs</h1>
-        <h2>ironwingjs is a lightweight front-end library which offers CRUD manipulation over a RESTful API</h2>
-        <a href="https://github.com/andrei-cacio/ironwing" class="button"><small>View project on</small> GitHub</a>
-      </div>
-    </header>
+        <p>ironwingjs is a lightweight front-end library which offers CRUD manipulation over a RESTful API</p>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>
-<a id="about" class="anchor" href="#about" aria-hidden="true"><span class="octicon octicon-link"></span></a>About</h1>
+        <p class="view"><a href="https://github.com/andrei-cacio/ironwing">View the Project on GitHub <small>andrei-cacio/ironwing</small></a></p>
 
-<p>In a few words, <strong>ironwingjs</strong> is a lightweight, framework-agnostic JavaScript library. <strong>ironginwjs</strong> is ment to be super easy to use and easy to integrate on any app. Out of the box it offers CRUD manipulation over a REST API interface.</p>
 
-<h3>
-<a id="version" class="anchor" href="#version" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version</h3>
+        <ul>
+          <li><a href="https://github.com/andrei-cacio/ironwing/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/andrei-cacio/ironwing/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/andrei-cacio/ironwing">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="about" class="anchor" href="#about" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About</h1>
 
-<p>0.7.0</p>
-
-<h3>
-<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
-
-<div class="highlight highlight-source-shell"><pre>$ bower install ironwing
-<span class="pl-c"># or</span>
-$ npm install ironwing</pre></div>
+<p>In a few words, <strong>ironwingjs</strong> is a lightweight, isomorphic, framework-agnostic JavaScript library. <strong>ironginwjs</strong> is ment to be super easy to use and easy to integrate on any app. Out of the box it offers CRUD manipulation over a REST API interface.</p>
 
 <h3>
-<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>How it works</h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+
+<div class="highlight highlight-source-shell"><pre>$ npm install ironwing</pre></div>
+
+<h3>
+<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How it works</h3>
+
+<p>Ironwing was ment to be simple. So let's say we have the <code>/api/users</code> endpoint and we want to manipulate the data that's coming from that API.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Tell ironwing to interact with the /api base path for all operations</span>
+<span class="pl-smi">ironwing</span>.<span class="pl-smi">base</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>/api<span class="pl-pds">'</span></span>;
+
+<span class="pl-c">// Fetch a collection and make a GET hit on /api/users</span>
+<span class="pl-en">ironwing</span>(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>).<span class="pl-en">then</span>((<span class="pl-smi">users</span>) <span class="pl-k">=&gt;</span> {
+  <span class="pl-c">// do something with users collection</span>
+});
+
+<span class="pl-c">// Fetch a single resource</span>
+<span class="pl-en">ironwing</span>(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>, <span class="pl-c1">100</span>).<span class="pl-en">then</span>((<span class="pl-smi">user</span>) <span class="pl-k">=&gt;</span> {
+  <span class="pl-c">// do something with the fetched user resource</span>
+});
+
+<span class="pl-c">// Update a resource</span>
+<span class="pl-en">ironwing</span>(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>, <span class="pl-c1">100</span>).<span class="pl-en">then</span>((<span class="pl-smi">user</span>) <span class="pl-k">=&gt;</span> {
+  <span class="pl-c">// access the resource attributes via the .attr object</span>
+  <span class="pl-smi">user</span>.<span class="pl-smi">attr</span>.<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Carl<span class="pl-pds">'</span></span>;
+  <span class="pl-smi">user</span>.<span class="pl-en">update</span>();
+});
+
+<span class="pl-c">// Delete a resource</span>
+<span class="pl-en">ironwing</span>(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>, <span class="pl-c1">100</span>).<span class="pl-en">then</span>((<span class="pl-smi">user</span>) <span class="pl-k">=&gt;</span> {
+  <span class="pl-smi">user</span>.<span class="pl-en">delete</span>();
+});</pre></div>
+
+<h4>
+<a id="rest" class="anchor" href="#rest" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>REST</h4>
+
+<p>Here is a map of the endpoints <em>ironwing</em> will hit on every operation</p>
+
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Method</th>
+<th>URL</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ironwing('users', 1)</td>
+<td>GET</td>
+<td>/users/:id</td>
+<td>Model</td>
+</tr>
+<tr>
+<td>ironwing('users')</td>
+<td>GET</td>
+<td>/users</td>
+<td>Collection</td>
+</tr>
+<tr>
+<td>user.update()</td>
+<td>PUT</td>
+<td>/users/:id</td>
+<td>Model</td>
+</tr>
+<tr>
+<td>ironwing.create()</td>
+<td>POST</td>
+<td>/users</td>
+<td>Model</td>
+</tr>
+<tr>
+<td>user.delete()</td>
+<td>DELETE</td>
+<td>/users/:id</td>
+<td>NULL</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="core-concepts" class="anchor" href="#core-concepts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Core concepts</h3>
 
 <hr>
 
 <h4>
-<a id="adapters" class="anchor" href="#adapters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adapters</h4>
+<a id="adapters" class="anchor" href="#adapters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adapters</h4>
 
-<p>An adapter is an object which follows a predefined interface so that it can be integrated with ironwing. Out of the box, ironwingjs comes with a <strong><em>XHR JSON</em></strong> adapter which is an intermediate object that communicates with the <code>XMLHttpRequest</code> API. The developer doesn't interact directly with the adapter. The adapter is used <em>“under the hood”</em> by <strong>ironwing</strong>. The main purpose of adapters is to easily modify how <strong>ironwing</strong> interacts with the server. Anyone can write their own adapter and use it with ironwingjs. To load an adapter you simply call the <code>useAdapter</code> method first.
+<p>An adapter is an object which follows a predefined interface so that it can be integrated with ironwing. Out of the box, ironwingjs comes with a <strong><em>JSON</em></strong> adapter which is an intermediate object that communicates with the <code>XMLHttpRequest</code> API. The developer doesn't interact directly with the adapter. The adapter is used <em>“under the hood”</em> by <strong>ironwing</strong>. The main purpose of adapters is to easily modify how <strong>ironwing</strong> interacts with the server. Anyone can write their own adapter and use it with ironwingjs. By default, ironwing loads the <strong><em>JSON</em></strong> adapter. You only have to specify the API's path so ironwing can communicate with your service properly.
 Here's a simple example:</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> ironwing <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>ironwing<span class="pl-pds">'</span></span>);
-<span class="pl-c">/**</span>
-<span class="pl-c"> * Load an adapter</span>
-<span class="pl-c"> * <span class="pl-k">@param</span>  {String} adapterName [The adapter's name (eg. JSON)]</span>
-<span class="pl-c"> * <span class="pl-k">@param</span>  {Array}  args        [An array of arguments]</span>
-<span class="pl-c"> */</span>
-ironwing.useAdapter(<span class="pl-s"><span class="pl-pds">'</span>JSON<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>/api<span class="pl-pds">'</span></span>]);</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-smi">ironwing</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>./ironwing<span class="pl-pds">'</span></span>;
+
+<span class="pl-smi">ironwing</span>.<span class="pl-smi">base</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>/api<span class="pl-pds">'</span></span>;</pre></div>
 
 <h3>
-<a id="storage" class="anchor" href="#storage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Storage</h3>
+<a id="storage" class="anchor" href="#storage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Storage</h3>
 
 <p>By default, <strong>ironwing</strong> has a local <em>(heap)</em> storage. After <strong>ironwing</strong> fetches a new model, by default it stores it locally for later use. So for example if we were to fetch data from an endpoint called <strong><em>/users/100</em></strong>:</p>
 
-<div class="highlight highlight-source-js"><pre>ironwing(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>, <span class="pl-c1">100</span>).then(<span class="pl-k">function</span>(<span class="pl-smi">user</span>){ 
-    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(user.attr.<span class="pl-c1">name</span>); 
+<div class="highlight highlight-source-js"><pre><span class="pl-en">ironwing</span>(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>, <span class="pl-c1">100</span>).<span class="pl-en">then</span>((<span class="pl-smi">user</span>) <span class="pl-k">=&gt;</span> { 
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">user</span>.<span class="pl-smi">attr</span>.<span class="pl-c1">name</span>); 
 });</pre></div>
 
 <p>We can later on retrieve that model from memory without any extra trips to the server, by simply calling</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> userModel <span class="pl-k">=</span>  ironwing.storage.<span class="pl-c1">find</span>(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>, <span class="pl-c1">100</span>);</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> userModel <span class="pl-k">=</span>  <span class="pl-smi">ironwing</span>.<span class="pl-smi">storage</span>.<span class="pl-c1">find</span>(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>, <span class="pl-c1">100</span>);</pre></div>
 
 <p>Or, if we fetched a collection</p>
 
-<div class="highlight highlight-source-js"><pre>ironwing(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>,).then(<span class="pl-k">function</span>(<span class="pl-smi">users</span>){ <span class="pl-en">console</span>.<span class="pl-c1">log</span>(users.<span class="pl-c1">length</span>); });</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-en">ironwing</span>(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>,).<span class="pl-en">then</span>((<span class="pl-smi">users</span>) <span class="pl-k">=&gt;</span> { 
+  <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">users</span>.<span class="pl-c1">length</span>); 
+});</pre></div>
 
 <p>we can later on get one or all users type model</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> usersCollection <span class="pl-k">=</span>  ironwing.storage.findAll(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>);</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> usersCollection <span class="pl-k">=</span>  <span class="pl-smi">ironwing</span>.<span class="pl-smi">storage</span>.<span class="pl-en">findAll</span>(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>);</pre></div>
 
 <p>For the moment, only the default storage can be used. In future releases we hope to implement a way to switch between storage implementations like an adapter for <em>local storage</em> so you can save the state of your models after refresh.</p>
 
 <h3>
-<a id="proxy-objects" class="anchor" href="#proxy-objects" aria-hidden="true"><span class="octicon octicon-link"></span></a>Proxy objects</h3>
+<a id="proxy-objects" class="anchor" href="#proxy-objects" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Proxy objects</h3>
 
 <p>The constructor method ironwing() is basically a factory method which returns <code>Model</code> instances. Each model exposes CRUD methods for manipulating your data. However, <strong>ironwing</strong> never modifies the raw JSON data directly. It exposes a <strong><em>proxy object</em></strong> as an intermediate. Each model object has a <code>.attr</code> object which contains a camel cased transformation of the JSON response. Everything you edit on the <em>attr proxy object</em>, it will be later synced with the original raw response and sent to the back-end. This technique offers control over what gets edited and what doesn't. In future releases, with the help of the proxy object, some cool features can be added like validators on attributes.</p>
 
 <p>A quick create and update example:</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> ironwing <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>ironwing<span class="pl-pds">'</span></span>);
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-smi">ironwing</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>./ironwing<span class="pl-pds">'</span></span>;
+
 <span class="pl-k">var</span> userData <span class="pl-k">=</span> {
     first_name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Jon<span class="pl-pds">'</span></span>,
     last_name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Doe<span class="pl-pds">'</span></span>;
 };
 
-ironwing.useAdapter(<span class="pl-s"><span class="pl-pds">'</span>JSON<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>/api<span class="pl-pds">'</span></span>]);
-ironwing.create(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>, userData).then(<span class="pl-k">function</span>(<span class="pl-smi">userModel</span>) {
+<span class="pl-smi">ironwing</span>.<span class="pl-smi">base</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>/api<span class="pl-pds">'</span></span>;
+<span class="pl-smi">ironwing</span>.<span class="pl-en">create</span>(<span class="pl-s"><span class="pl-pds">'</span>users<span class="pl-pds">'</span></span>, userData).<span class="pl-en">then</span>((<span class="pl-smi">userModel</span>) <span class="pl-k">=&gt;</span> {
     <span class="pl-c">/**</span>
 <span class="pl-c">    * a POST request is sent to the server</span>
 <span class="pl-c">    * /api/users</span>
 <span class="pl-c">    */</span>
-    userModel.attr.firstName <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Jon<span class="pl-pds">'</span></span>;
-    userModel.attr.lastName <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Doe<span class="pl-pds">'</span></span>;
+    <span class="pl-smi">userModel</span>.<span class="pl-smi">attr</span>.<span class="pl-smi">firstName</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Jon<span class="pl-pds">'</span></span>;
+    <span class="pl-smi">userModel</span>.<span class="pl-smi">attr</span>.<span class="pl-smi">lastName</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Doe<span class="pl-pds">'</span></span>;
 
-    userModel.update().then(<span class="pl-k">function</span>() {
+    <span class="pl-smi">userModel</span>.<span class="pl-en">update</span>().<span class="pl-en">then</span>(() <span class="pl-k">=&gt;</span> {
         <span class="pl-c">/**</span>
 <span class="pl-c">        * a PUT request is sent to the server</span>
 <span class="pl-c">        * /api/users/:id</span>
@@ -117,29 +187,25 @@ ironwing.create(<span class="pl-s"><span class="pl-pds">'</span>users<span class
     });
 });</pre></div>
 
+<hr>
+
+<h1>
+<a id="ironwingjs-in-today-software-magazine" class="anchor" href="#ironwingjs-in-today-software-magazine" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ironwingjs in <a href="http://www.todaysoftmag.com">Today Software Magazine</a>
+</h1>
+
+<p><a href="http://www.todaysoftmag.com/article/1703/introducing-ironwingjs">Introducing Ironwingjs</a></p>
+
 <h2>
-<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
 
 <p>MIT</p>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/andrei-cacio/ironwing/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/andrei-cacio/ironwing/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/andrei-cacio/ironwing"></a> is maintained by <a href="https://github.com/andrei-cacio">andrei-cacio</a>.</p>
-
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/andrei-cacio">andrei-cacio</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
-
-  
+    <script src="javascripts/scale.fix.js"></script>
+    
   </body>
 </html>
