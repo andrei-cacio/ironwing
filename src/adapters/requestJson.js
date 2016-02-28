@@ -24,14 +24,9 @@ export default class RequestJSON {
     this.fail = null;
   }
 
-  ajax(method, url) {
-    const options = {
-      method: method.toUpperCase(),
-      url: this.apiUrl + url,
-      headers: {
-          'User-Agent': 'ironwing'
-        }
-    };
+  ajax(method, url, async, data) {
+    const options = getRequestOptions(method, this.apiUrl + url, data);
+
     request(options, (err, res, body) => {
       if (err || !body) {
         this.fail.call();
@@ -71,4 +66,21 @@ export default class RequestJSON {
 
     return this;
   }
+}
+
+function getRequestOptions(method, url, data) {
+  const options = {
+    method: method.toUpperCase(),
+    url: url,
+    headers: {
+        'User-Agent': 'ironwing',
+        'Content-Type': 'application/json;charset=UTF-8'
+      }
+  };
+
+  if (options.method === 'POST' || options.method === 'PUT') {
+    options.body = JSON.stringify(data);
+  }
+
+  return options;
 }
