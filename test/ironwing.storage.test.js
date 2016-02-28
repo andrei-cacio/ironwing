@@ -1,17 +1,15 @@
 var assert = require('assert'),
-  FakeXHR = require('../src/adapters/fakeXHRJson'),
-  IW = require('../src/index');
+  IW = require('../src/index'),
+  jsonServer = 'http://localhost:3000';
 
-IW.adapters.fakeJSON = new FakeXHR();
+IW.base = jsonServer;
 
 describe('ironwing model', function() {
   describe('#fetching a collection', function() {
     it('should be able to find a model after it was fetched', function() {
-      IW.useAdapter('fakeJSON', ['../../demo/api']);
-
-      return IW('posts.json').then(function() {
-        var modelNr = IW.storage.find('posts.json', 386);
-        var modelString = IW.storage.find('posts.json', '386');
+      return IW('users').then(function() {
+        var modelNr = IW.storage.find('users', 10);
+        var modelString = IW.storage.find('users', '10');
 
         assert.equal(modelNr, modelString);
       });
@@ -19,43 +17,37 @@ describe('ironwing model', function() {
     });
 
     it('should be able to find a collection after it was fetched', function() {
-      IW.useAdapter('fakeJSON', ['../../demo/api']);
+      return IW('users').then(function(fetchedUsers) {
+        var users = IW.storage.findAll('users');
 
-      return IW('posts.json').then(function(fetchedPosts) {
-        var posts = IW.storage.findAll('posts.json');
-
-        assert.equal(posts.length, fetchedPosts.length);
-        assert.equal(IW.storage.getSize(), 2);
+        assert.equal(users.length, fetchedUsers.length);
+        assert.equal(IW.storage.getSize(), 1000);
       });
     });
 
     it('should be able to find a resource after it was fetched', function() {
-      IW.useAdapter('fakeJSON', ['../../demo/api']);
-
-      return IW('post', 386).then(function(fetchedPost) {
-        var postFound = IW.storage.find('post', 386);
+      return IW('users', 401).then(function(fetchedPost) {
+        var postFound = IW.storage.find('users', 401);
 
         assert.equal(JSON.stringify(postFound), JSON.stringify(fetchedPost));
-        assert.equal(IW.storage.getSize(), 3);
+        assert.equal(IW.storage.getSize(), 1000);
       });
     });
 
     it('should not be able to find a resource after it was deleted', function() {
-       IW.useAdapter('fakeJSON', ['../../demo/api']);
+      return IW('users', 402).then(function(fetchedUser) {
+        var postFound = IW.storage.find('users', 402);
 
-      return IW('post', 386).then(function(fetchedPost) {
-        var postFound = IW.storage.find('post', 386);
+        assert.equal(JSON.stringify(postFound), JSON.stringify(fetchedUser));
+        assert.equal(IW.storage.getSize(), 1000);
 
-        assert.equal(JSON.stringify(postFound), JSON.stringify(fetchedPost));
-        assert.equal(IW.storage.getSize(), 3);
+        fetchedUser.delete();
 
-        fetchedPost.delete();
+        postFound = IW.storage.find('users', 402);
 
-        postFound = IW.storage.find('post', 386);
-
-        assert.notEqual(JSON.stringify(postFound), JSON.stringify(fetchedPost));
+        assert.notEqual(JSON.stringify(postFound), JSON.stringify(fetchedUser));
         assert.equal(!!postFound, false);
-        assert.equal(IW.storage.getSize(), 2);
+        assert.equal(IW.storage.getSize(), 999);
       });
     });
   });
