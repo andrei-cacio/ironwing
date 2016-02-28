@@ -6,7 +6,7 @@
 'use strict';
 
 import clone from 'lodash/lang/clone';
-import {checkURL} from '../core/utils';
+import {checkURL} from '../../core/utils';
 
 function XHRJson() {
   this.appUrl = null;

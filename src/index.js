@@ -10,16 +10,14 @@
 // each ViewModel comes with implemeted CRUD methods which can accept a callback function for more flexibile use
 
 
-import XHRJson from './adapters/XHRJson';
-import RequestJSON from './adapters/requestJson';
+import {adapt as adaptJSON} from './adapters/json';
 import IW from './core/iw';
 
 /**
  * Inject the adapter to IWjs adapters
  */
 IW.adapters = IW.adapters || {};
-IW.adapters.XHRJson = new XHRJson();
-IW.adapters.RequestJSON = new RequestJSON();
+IW.adapters.JSON = adaptJSON();
 
 if (typeof window === 'object') {
   window.ironwing = IW;

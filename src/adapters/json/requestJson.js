@@ -1,7 +1,7 @@
 'use strict';
 
 import request from 'request';
-import {checkURL} from '../core/utils';
+import {checkURL} from '../../core/utils';
 
 export default class RequestJSON {
   constructor() {
