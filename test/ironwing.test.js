@@ -1,8 +1,6 @@
 var assert = require('assert'),
   pkg = require('../package.json'),
-  IW = require('../src/index'),
-  FakeXHR = require('../src/adapters/json/fakeXHRJson'),
-  XHR = require('../src/adapters/json/XHRJson'),
+  IW = require('../src'),
   RequestJSON = require('../src/adapters/json/requestJson');
 
 describe('ironwing', function() {
@@ -15,7 +13,7 @@ describe('ironwing', function() {
 
       assert.equal(IW.adapter instanceof RequestJSON, true);
     });
-    it('should be able to parse api addresses correctly', function() {
+    it('should be able to parse api addresses correctly', function(done) {
        IW.useAdapter('JSON', ['api']);
 
        assert.equal(IW.adapter.apiUrl, '/api/');
@@ -35,10 +33,11 @@ describe('ironwing', function() {
        IW.useAdapter('JSON', ['http://jsonplaceholder.typicode.com']);
 
        assert.equal(IW.adapter.apiUrl, 'http://jsonplaceholder.typicode.com/');
+       done();
     });
   });
   describe('#factory method', function() {
-    it('factory method returns array or promsie', function() {
+    it('factory method returns array or promsie', function(done) {
       IW.useAdapter('JSON', [pkg.jsonTestServer]);
 
       var promiseUsers = IW('users'),
@@ -46,20 +45,18 @@ describe('ironwing', function() {
 
       assert.equal(typeof promiseUsers.then, 'function');
       assert.equal(typeof promiseUser.then, 'function');
+      done();
     });
 
     it('should return array for collection', function() {
-        return
-          IW('users').then((users) => {
-            assert.equal(users.length, 999);
-            assert.equal(Array.isArray(users), true);
-          });
-
+      return IW('users').then(function(users) {
+          assert.equal(users.length, 999);
+          assert.equal(Array.isArray(users), true);
+        });
     });
 
     it('should return object for resource', function() {
-      return
-        IW('users', 200).then(function(user){
+      return IW('users', 200).then(function(user){
           assert.equal(Array.isArray(user), false);
           assert.equal(user.type, 'users');
         });
@@ -99,7 +96,7 @@ describe('ironwing', function() {
     });
 
     it('should be able to update the model after UPDATE', function() {
-      var post = IW.storage.find('post.json', 386);
+      var post = IW.storage.find('users', 380);
 
       post.attr.title = 'Bla bla';
       return post.update().then(function(dbPost) {
@@ -108,17 +105,15 @@ describe('ironwing', function() {
     });
 
     it('should be able to delete a model', function() {
-      var promisePosts = IW('post.json');
+      return IW('users', 301).then(function(user){
+        user.delete();
 
-      return promisePosts.then(function(post){
-        post.delete();
-
-        assert.equal(Object.keys(post.attr).length, 0);
+        assert.equal(Object.keys(user.attr).length, 0);
       });
     });
 
     it('should be able to create a model', function() {
-      var postPromise = IW.create('post.json', {
+      var userPromise = IW.create('users', {
         title: 'test',
         blog: {
           site_status: 'active',
@@ -150,14 +145,14 @@ describe('ironwing', function() {
         social_published: true
       });
 
-      return postPromise.then(function(postModel) {
-        assert.equal(postModel.attr.id, 1000);
-        assert.equal(postModel.attr.hasOwnProperty('createdDate'), true);
-        assert.equal(postModel.attr.hasOwnProperty('socialPublished'), true);
-        assert.equal(postModel.attr.blog.hasOwnProperty('isDefault'), true);
-        assert.equal(postModel.attr.blog.hasOwnProperty('domain'), true);
-        assert.equal(postModel.attr.title, 'test');
-        assert.equal(postModel.attr.blog.siteStatus, 'active');
+      return userPromise.then(function(userModel) {
+        assert.equal(userModel.attr.id, 1000);
+        assert.equal(userModel.attr.hasOwnProperty('createdDate'), true);
+        assert.equal(userModel.attr.hasOwnProperty('socialPublished'), true);
+        assert.equal(userModel.attr.blog.hasOwnProperty('isDefault'), true);
+        assert.equal(userModel.attr.blog.hasOwnProperty('domain'), true);
+        assert.equal(userModel.attr.title, 'test');
+        assert.equal(userModel.attr.blog.siteStatus, 'active');
       });
     });
 
@@ -196,23 +191,23 @@ describe('ironwing', function() {
         social_published: true
       });
 
-      return postPromise.then(function(postModel) {
-        var post = IW.storage.find('post', 1000);
+      return postPromise.then(function(userModel) {
+        var user = IW.storage.find('users', 1000);
 
-        assert.equal(JSON.stringify(post), JSON.stringify(postModel));
+        assert.equal(JSON.stringify(user), JSON.stringify(userModel));
 
-        post.get();
+        user.get();
 
-        post.attr.title = 'New title';
-        post.attr.blog.siteStatus = 'unactive';
+        user.attr.title = 'New title';
+        user.attr.blog.siteStatus = 'unactive';
 
-        post.update();
+        user.update();
 
-        post.delete();
+        user.delete();
 
-        post = IW.storage.find('post', 1000);
+        user = IW.storage.find('users', 1000);
 
-        assert.equal(!!post, false);
+        assert.equal(!!user, false);
       });
 
     });
