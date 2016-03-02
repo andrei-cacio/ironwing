@@ -40,11 +40,9 @@ describe('ironwing', function() {
     it('factory method returns array or promsie', function(done) {
       IW.useAdapter('JSON', [pkg.jsonTestServer]);
 
-      var promiseUsers = IW('users'),
-          promiseUser = IW('users', 100);
+      var promiseUsers = IW('users');
 
       assert.equal(typeof promiseUsers.then, 'function');
-      assert.equal(typeof promiseUser.then, 'function');
       done();
     });
 
@@ -104,11 +102,12 @@ describe('ironwing', function() {
       });
     });
 
-    it('should be able to delete a model', function() {
+    it('should be able to delete a model', function(done) {
       return IW('users', 301).then(function(user){
-        user.delete();
-
-        assert.equal(Object.keys(user.attr).length, 0);
+        return user.delete().then(function() {
+          assert.equal(Object.keys(user.attr).length, 0);
+          done();
+        });
       });
     });
 
@@ -157,9 +156,7 @@ describe('ironwing', function() {
     });
 
     it('should be able to support a full CRUD lifecycle', function() {
-      IW.useAdapter('fakeJSON', ['../../demo/api']);
-
-      var postPromise = IW.create('post', {
+      var userPromise = IW.create('users', {
         title: 'test',
         blog: {
           site_status: 'active',
@@ -191,7 +188,7 @@ describe('ironwing', function() {
         social_published: true
       });
 
-      return postPromise.then(function(userModel) {
+      return userPromise.then(function(userModel) {
         var user = IW.storage.find('users', 1000);
 
         assert.equal(JSON.stringify(user), JSON.stringify(userModel));

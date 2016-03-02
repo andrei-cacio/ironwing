@@ -44,14 +44,14 @@ describe('STORAGE', function() {
         assert.equal(JSON.stringify(postFound), JSON.stringify(fetchedUser));
         assert.equal(IW.storage.getSize(), 1000);
 
-        fetchedUser.delete();
+        return fetchedUser.delete().then(function() {
+          postFound = IW.storage.find('users', 402);
 
-        postFound = IW.storage.find('users', 402);
-
-        assert.notEqual(JSON.stringify(postFound), JSON.stringify(fetchedUser));
-        assert.equal(!!postFound, false);
-        assert.equal(IW.storage.getSize(), 999);
-        done();
+          assert.notEqual(JSON.stringify(postFound), JSON.stringify(fetchedUser));
+          assert.equal(!!postFound, false);
+          assert.equal(IW.storage.getSize(), 999);
+          done();
+        });
       });
     });
   });
