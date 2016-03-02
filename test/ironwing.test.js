@@ -157,6 +157,7 @@ describe('ironwing', function() {
 
     it('should be able to support a full CRUD lifecycle', function() {
       var userPromise = IW.create('users', {
+        id: '2000',
         title: 'test',
         blog: {
           site_status: 'active',
@@ -189,7 +190,7 @@ describe('ironwing', function() {
       });
 
       return userPromise.then(function(userModel) {
-        var user = IW.storage.find('users', 1000);
+        var user = IW.storage.find('users', 2000);
 
         assert.equal(JSON.stringify(user), JSON.stringify(userModel));
 
@@ -198,13 +199,13 @@ describe('ironwing', function() {
         user.attr.title = 'New title';
         user.attr.blog.siteStatus = 'unactive';
 
-        user.update();
+        return user.update().then(function() {
+          return user.delete().then(function() {
+            const found = IW.storage.find('users', 2000);
 
-        user.delete();
-
-        user = IW.storage.find('users', 1000);
-
-        assert.equal(!!user, false);
+            assert.equal(!!found, false);
+          });
+        });
       });
 
     });
