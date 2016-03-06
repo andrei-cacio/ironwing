@@ -6,7 +6,7 @@ import q from 'q';
 import clone from 'lodash/lang/clone';
 
 const original = {};
-var Defer = q.defer;
+const Defer = q.defer;
 
 export default class Model {
   constructor(type, id, attr, adapter) {
