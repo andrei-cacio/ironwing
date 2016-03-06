@@ -1,2 +1,12 @@
-src
-json
+./src
+./json
+.idea
+*.cache
+*.sublime-project
+*.sublime-workspace
+demo
+node_modules
+npm-debug.log
+test
+demo
+gulpfile.*
