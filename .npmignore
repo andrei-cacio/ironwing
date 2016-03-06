@@ -1,5 +1,8 @@
-./src
-./json
+.travis.*
+.jshintrc
+.editorconfig
+src/
+json/
 .idea
 *.cache
 *.sublime-project
