@@ -1,11 +1,11 @@
 'use strict';
 
 import request from 'request';
-import {checkURL} from '../core/utils';
+import {checkURL} from '../../core/utils';
 
 export default class RequestJSON {
   constructor() {
-    this.appUrl = null;
+    this.apiUrl = null;
     this.done = null;
     this.fail = null;
   }

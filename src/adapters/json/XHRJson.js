@@ -5,7 +5,7 @@
 
 'use strict';
 
-import {checkURL} from '../core/utils';
+import {checkURL} from '../../core/utils';
 
 export default class XHRJson {
   constructor() {

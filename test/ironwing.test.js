@@ -1,117 +1,67 @@
 var assert = require('assert'),
-  IW = require('../src/index'),
-  FakeXHR = require('../src/adapters/fakeXHRJson'),
-  XHR = require('../src/adapters/XHRJson'),
-  RequestJSON = require('../src/adapters/requestJson');
-
-IW.adapters.fakeJSON = new FakeXHR();
+  pkg = require('../package.json'),
+  IW = require('../src');
 
 describe('ironwing', function() {
-  describe('#XHR adaptor', function(){
-    it('should load JSON adapter by default', function() {
-      assert.equal(IW.adapters.hasOwnProperty('fakeJSON'), true);
-      assert.equal(IW.adapters.XHRJson instanceof XHR, true);
-      assert.equal(IW.adapters.fakeJSON instanceof FakeXHR, true);
-      assert.equal(IW.adapters.RequestJSON instanceof RequestJSON, true);
-    });
-    it('should be able to load an adapter', function() {
-      IW.useAdapter('fakeJSON', ['api']);
-
-      assert.equal(IW.adapter instanceof FakeXHR, true);
-    });
-    it('should be able to parse api addresses correctly', function() {
-       IW.useAdapter('fakeJSON', ['api']);
-
-       assert.equal(IW.adapter.apiUrl, '/api/');
-
-       IW.useAdapter('fakeJSON', ['/api']);
-
-       assert.equal(IW.adapter.apiUrl, '/api/');
-
-       IW.useAdapter('fakeJSON', ['api/']);
-
-       assert.equal(IW.adapter.apiUrl, '/api/');
-
-       IW.useAdapter('fakeJSON', ['/api/']);
-
-       assert.equal(IW.adapter.apiUrl, '/api/');
-
-       IW.useAdapter('fakeJSON', ['http://jsonplaceholder.typicode.com']);
-
-       assert.equal(IW.adapter.apiUrl, 'http://jsonplaceholder.typicode.com/');
-    });
-  });
   describe('#factory method', function() {
-    it('factory method returns array or promsie', function() {
-      IW.useAdapter('fakeJSON', ['../../demo/api']);
+    it('factory method returns array or promsie', function(done) {
+      IW.useAdapter('JSON', [pkg.jsonTestServer]);
 
-      var promisePosts = IW('posts.json'),
-          promisePost = IW('post.json');
+      var promiseUsers = IW('users');
 
-      assert.equal(typeof promisePosts.then, 'function');
-      assert.equal(typeof promisePost.then, 'function');
+      assert.equal(typeof promiseUsers.then, 'function');
+      done();
     });
 
     it('should return array for collection', function() {
-        IW.useAdapter('fakeJSON', ['../../demo/api']);
-
-        var promisePosts = IW('posts.json');
-
-        return promisePosts.then(function(posts){
-          assert.equal(posts.length, 2);
-          assert.equal(Array.isArray(posts), true);
+      return IW('users').then(function(users) {
+          assert.equal(users.length, 999);
+          assert.equal(Array.isArray(users), true);
         });
     });
 
     it('should return object for resource', function() {
-      IW.useAdapter('fakeJSON', ['../../demo/api']);
-
-      var promisePosts = IW('post.json');
-
-      return promisePosts.then(function(post){
-        assert.equal(Array.isArray(post), false);
-        assert.equal(post.type, 'post.json');
-      });
+      return IW('users', 200).then(function(user){
+          assert.equal(Array.isArray(user), false);
+          assert.equal(user.type, 'users');
+        });
     });
 
     it('should be able to execute GET method on model', function() {
-      var promisePosts = IW('post.json');
+      return
+        IW('users', 10).then(function(user){
+          var oldUser = user;
 
-      return promisePosts.then(function(post){
-        var oldPost = post;
+          assert.equal(Array.isArray(user), false);
+          assert.equal(user.type, 'users');
 
-        assert.equal(Array.isArray(post), false);
-        assert.equal(post.type, 'post.json');
+          user.get();
 
-        post.get();
-
-        assert.equal(JSON.stringify(oldPost), JSON.stringify(post));
-
-      });
+          assert.equal(JSON.stringify(oldUser), JSON.stringify(user));
+        });
 
     });
 
     it('should be able to UPDATE a model', function() {
-      var promisePosts = IW('post.json');
+      return
+        IW('users', 10).then(function(user){
+          var oldUser = user;
 
-      return promisePosts.then(function(post){
-        var oldPost = post;
+          assert.equal(Array.isArray(user), false);
+          assert.equal(user.type, 'users');
 
-        assert.equal(Array.isArray(post), false);
-        assert.equal(post.type, 'post.json');
+          user.get();
+          user.attr.name = 'New name';
 
-        post.get();
-        post.attr.title = 'New title';
+          user.update();
 
-        post.update();
+          assert.equal(JSON.stringify(oldUser), JSON.stringify(user));
 
-        assert.equal(JSON.stringify(oldPost), JSON.stringify(post));
-
-      });
+        });
     });
 
     it('should be able to update the model after UPDATE', function() {
-      var post = IW.storage.find('post.json', 386);
+      var post = IW.storage.find('users', 380);
 
       post.attr.title = 'Bla bla';
       return post.update().then(function(dbPost) {
@@ -119,18 +69,17 @@ describe('ironwing', function() {
       });
     });
 
-    it('should be able to delete a model', function() {
-      var promisePosts = IW('post.json');
-
-      return promisePosts.then(function(post){
-        post.delete();
-
-        assert.equal(Object.keys(post.attr).length, 0);
+    it('should be able to delete a model', function(done) {
+      return IW('users', 301).then(function(user){
+        return user.delete().then(function() {
+          assert.equal(Object.keys(user.attr).length, 0);
+          done();
+        });
       });
     });
 
     it('should be able to create a model', function() {
-      var postPromise = IW.create('post.json', {
+      var userPromise = IW.create('users', {
         title: 'test',
         blog: {
           site_status: 'active',
@@ -162,21 +111,20 @@ describe('ironwing', function() {
         social_published: true
       });
 
-      return postPromise.then(function(postModel) {
-        assert.equal(postModel.attr.id, 1000);
-        assert.equal(postModel.attr.hasOwnProperty('createdDate'), true);
-        assert.equal(postModel.attr.hasOwnProperty('socialPublished'), true);
-        assert.equal(postModel.attr.blog.hasOwnProperty('isDefault'), true);
-        assert.equal(postModel.attr.blog.hasOwnProperty('domain'), true);
-        assert.equal(postModel.attr.title, 'test');
-        assert.equal(postModel.attr.blog.siteStatus, 'active');
+      return userPromise.then(function(userModel) {
+        assert.equal(userModel.attr.id, 1000);
+        assert.equal(userModel.attr.hasOwnProperty('createdDate'), true);
+        assert.equal(userModel.attr.hasOwnProperty('socialPublished'), true);
+        assert.equal(userModel.attr.blog.hasOwnProperty('isDefault'), true);
+        assert.equal(userModel.attr.blog.hasOwnProperty('domain'), true);
+        assert.equal(userModel.attr.title, 'test');
+        assert.equal(userModel.attr.blog.siteStatus, 'active');
       });
     });
 
     it('should be able to support a full CRUD lifecycle', function() {
-      IW.useAdapter('fakeJSON', ['../../demo/api']);
-
-      var postPromise = IW.create('post', {
+      var userPromise = IW.create('users', {
+        id: '2000',
         title: 'test',
         blog: {
           site_status: 'active',
@@ -208,23 +156,23 @@ describe('ironwing', function() {
         social_published: true
       });
 
-      return postPromise.then(function(postModel) {
-        var post = IW.storage.find('post', 1000);
+      return userPromise.then(function(userModel) {
+        var user = IW.storage.find('users', 2000);
 
-        assert.equal(JSON.stringify(post), JSON.stringify(postModel));
+        assert.equal(JSON.stringify(user), JSON.stringify(userModel));
 
-        post.get();
+        user.get();
 
-        post.attr.title = 'New title';
-        post.attr.blog.siteStatus = 'unactive';
+        user.attr.title = 'New title';
+        user.attr.blog.siteStatus = 'unactive';
 
-        post.update();
+        return user.update().then(function() {
+          return user.delete().then(function() {
+            const found = IW.storage.find('users', 2000);
 
-        post.delete();
-
-        post = IW.storage.find('post', 1000);
-
-        assert.equal(!!post, false);
+            assert.equal(!!found, false);
+          });
+        });
       });
 
     });

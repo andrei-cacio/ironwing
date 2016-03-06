@@ -4,7 +4,9 @@
   "description": "Ironwing is a lightweight front-end data library for model like data representations",
   "main": "dist/index.js",
   "scripts": {
+    "pretest": "json-server json/data.js > /dev/null 2>&1 &",
     "test": "mocha --compilers js:babel/register && gulp lint",
+    "posttest": "pkill -f json-server > /dev/null 2>&1 &",
     "build": "babel src --presets babel-preset-es2015 --out-dir dist",
     "start": "gulp"
   },
@@ -56,5 +58,6 @@
     "lodash": "^3.10.1",
     "q": "^1.4.1",
     "request": "^2.69.0"
-  }
+  },
+  "jsonTestServer": "http://localhost:3000"
 }

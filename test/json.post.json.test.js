@@ -1,7 +1,7 @@
 var assert = require('assert'),
     iwUtils = require('../src/core/utils'),
     clone = require('lodash/lang/clone'),
-    postJson = require('../demo/api/post');
+    postJson = require('../json/post');
 
 describe('JSON', function() {
   describe('#testing on post.json', function() {

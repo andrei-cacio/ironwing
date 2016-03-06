@@ -6,11 +6,11 @@ import q from 'q';
 import clone from 'lodash/lang/clone';
 
 const original = {};
-var Defer = q.defer;
+const Defer = q.defer;
 
 export default class Model {
   constructor(type, id, attr, adapter) {
-    var models = [],
+    const models = [],
       p = new Defer(),
       self = this;
 
@@ -85,12 +85,10 @@ export default class Model {
    * @return {Promise}
    */
   update() {
-    var self = this,
+    const self = this,
       defer = new Defer(),
       originalObj = original[this.type + this.__unique],
-      syncedOriginal= {};
-
-    syncedOriginal = syncObjects(originalObj, this.attr);
+      syncedOriginal= syncObjects(originalObj, this.attr);
 
     this.__adapter.onDone((attr) => {
       self.attr = toCamel(clone(attr, true));
@@ -108,7 +106,7 @@ export default class Model {
   }
 
   get() {
-    var self = this,
+    const self = this,
         defer = new Defer();
 
     this.__adapter.onDone((attr) => {
@@ -126,7 +124,7 @@ export default class Model {
   }
 
   delete() {
-    var defer = new Defer();
+    const defer = new Defer();
 
     this.__adapter.onDone(() => {
       defer.resolve();
@@ -150,7 +148,7 @@ export default class Model {
 * @param  {Object} attr The model's attributes
 */
 Model.create = function(type, attr, __adapter) {
-  var defer = new Defer();
+  const defer = new Defer();
 
   __adapter.onDone((newAttr) => {
     defer.resolve(new Model(type, newAttr.id, newAttr, __adapter));

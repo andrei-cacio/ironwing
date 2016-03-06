@@ -5,21 +5,10 @@ import storage from './storage';
 
 function IW(type, id) {
   if (!IW.adapter) {
-    loadAdapter();
+    IW.useAdapter('JSON', [IW.base || '/']);
   }
 
   return new Model(type, id, null, IW.adapter);
-}
-
-function loadAdapter() {
-  const basePath = [IW.base || '/'];
-
-  if (typeof window !== 'undefined') {
-    IW.useAdapter('XHRJson', basePath);
-  }
-  else if (typeof process !== 'undefined') {
-    IW.useAdapter('RequestJSON', basePath);
-  }
 }
 
 /**
