@@ -10,7 +10,7 @@ import {checkURL} from '../../core/utils';
 export default class XHRJson {
   constructor() {
     this.xhr = (typeof XMLHttpRequest === 'function') ? new XMLHttpRequest() : null;
-    this.appUrl = null;
+    this.apiUrl = null;
     this.done = null;
     this.fail = null;
   }
