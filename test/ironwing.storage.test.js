@@ -1,12 +1,13 @@
 var assert = require('assert'),
   IW = require('../src'),
-  jsonServer = 'http://localhost:3000';
+  pkg = require('../package.json');
 
-IW.base = jsonServer;
 
-describe('STORAGE', function() {
+describe('storage', function() {
   describe('#fetching a collection', function() {
     it('should be able to find a model after it was fetched', function(done) {
+      IW.useAdapter('JSON', [pkg.jsonTestServer]);
+
       return IW('users').then(function() {
         var modelNr = IW.storage.find('users', 10);
         var modelString = IW.storage.find('users', '10');
