@@ -11,8 +11,7 @@ const Defer = q.defer;
 export default class Model {
   constructor(type, id, attr, adapter) {
     const models = [],
-      p = new Defer(),
-      self = this;
+      p = new Defer();
 
     // Check if resource or collection
     this.address = (id) ? type + '/' + id : type;
@@ -31,7 +30,7 @@ export default class Model {
            * GET Collection case
            */
           model.forEach((item) => {
-            models.push( new Model(type, item.id, item, self.__adapter) );
+            models.push( new Model(type, item.id, item, this.__adapter) );
           });
           p.resolve(models);
         }
@@ -39,14 +38,14 @@ export default class Model {
           /**
            * GET Resource case
            */
-          self.attr = toCamel(clone(model, true));
-          storage.store(self);
-          original[self.type + self.__unique] = model;
+          this.attr = toCamel(clone(model, true));
+          storage.store(this);
+          original[this.type + this.__unique] = model;
 
-          p.resolve(self);
+          p.resolve(this);
         }
       }).onFail(() => {
-        p.reject('GET HTTP request failed for the resource: [' + self.type +']');
+        p.reject('GET HTTP request failed for the resource: [' + this.type +']');
       }).ajax('get', this.address, false);
 
     }
@@ -85,20 +84,19 @@ export default class Model {
    * @return {Promise}
    */
   update() {
-    const self = this,
-      defer = new Defer(),
+    const defer = new Defer(),
       originalObj = original[this.type + this.__unique],
       syncedOriginal= syncObjects(originalObj, this.attr);
 
     this.__adapter.onDone((attr) => {
-      self.attr = toCamel(clone(attr, true));
-      storage.store(self);
-      original[self.type + self.__unique] = attr;
+      this.attr = toCamel(clone(attr, true));
+      storage.store(this);
+      original[this.type + this.__unique] = attr;
 
-      defer.resolve(self);
+      defer.resolve(this);
     })
     .onFail(() => {
-      defer.reject('A problem has accoured while trying to update the [' + self.type + '] model');
+      defer.reject('A problem has accoured while trying to update the [' + this.type + '] model');
     })
     .ajax('put', this.address, false, syncedOriginal);
 
@@ -106,18 +104,17 @@ export default class Model {
   }
 
   get() {
-    const self = this,
-        defer = new Defer();
+    const defer = new Defer();
 
     this.__adapter.onDone((attr) => {
       /**
        * GET Resource case
        */
-      self.attr = toCamel(clone(attr, true));
-      storage.store(self);
-      original[self.type + self.__unique] = attr;
+      this.attr = toCamel(clone(attr, true));
+      storage.store(this);
+      original[this.type + this.__unique] = attr;
 
-      defer.resolve(self);
+      defer.resolve(this);
     }).ajax('get', this.address, false);
 
     return defer.promise;
